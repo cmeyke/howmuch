@@ -31,6 +31,7 @@ function OpenWallet () {
     getBalance()
     window.document.title = balance
   } else {
+    window.document.title = 'Please connect wallet'
     return <div>Please connect wallet</div>
   }
 
