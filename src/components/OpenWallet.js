@@ -29,6 +29,7 @@ function OpenWallet () {
   getAddress()
   if (address > 0) {
     getBalance()
+    window.document.title = balance
   } else {
     return <div>Please connect wallet</div>
   }
