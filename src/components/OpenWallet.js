@@ -1,9 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
+import axios from 'axios'
 
 function OpenWallet () {
   const [address, setAddress] = useState(0)
   const [balance, setBalance] = useState(0)
+  const [validators, setValidators] = useState([])
+  const [validatorBalances, setValidatorBalances] = useState([])
+  const [validatorBalancesSum, setValidatorBalancesSum] = useState(0)
+  const [priceEUR, setPriceEUR] = useState(0)
+
+  useEffect(() => {
+    axios
+      .get('https://api.kraken.com/0/public/Ticker?pair=ETHEUR')
+      .then(res => {
+        setPriceEUR(res.data.result.XETHZEUR.c[0])
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
+
+  useEffect(() => {
+    setValidatorBalances([])
+    setValidatorBalancesSum(0)
+    validators.forEach(validator =>
+      axios
+        .get(`https://beaconcha.in/api/v1/validator/${validator}`)
+        .then(res => {
+          const balance = res.data.data.balance / 1000000000
+          setValidatorBalances(v => v.concat([[validator, balance]]))
+          setValidatorBalancesSum(s => s + balance)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    )
+  }, [validators])
+
+  useEffect(() => {
+    if (address) {
+      axios
+        .get(`https://beaconcha.in/api/v1/validator/eth1/${address}`)
+        .then(res => {
+          setValidators(res.data.data.map(item => item.validatorindex))
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }, [address])
 
   async function getAddress () {
     try {
@@ -52,12 +98,33 @@ function OpenWallet () {
   }
 
   getBalance()
-  window.document.title = balance
+  const overallBalance = validatorBalancesSum + Number(balance)
+  window.document.title = overallBalance
 
   return (
     <div>
       <div>{address}</div>
       <div>{balance}</div>
+      {validatorBalances.map(validator => (
+        <div key={validator[0]}>
+          {validator[0]}: {validator[1]}
+        </div>
+      ))}
+      <div>{validatorBalancesSum}</div>
+      <div>
+        {overallBalance} (
+        {new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: 'EUR'
+        }).format(priceEUR)}
+        )
+      </div>
+      <div>
+        {new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: 'EUR'
+        }).format(overallBalance * priceEUR)}
+      </div>
     </div>
   )
 }
