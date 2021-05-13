@@ -5,10 +5,10 @@ function OpenWallet () {
   const [address, setAddress] = useState(0)
   const [balance, setBalance] = useState(0)
 
-  async function getAddress () {
+  async function connectWallet () {
     try {
-      const address = await signer.getAddress()
-      setAddress(address)
+      const [selectedAddress] = await window.ethereum.enable()
+      setAddress(selectedAddress)
     } catch (e) {
       console.error(e)
     }
@@ -23,17 +23,23 @@ function OpenWallet () {
     }
   }
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  const signer = provider.getSigner()
-
-  getAddress()
-  if (address > 0) {
-    getBalance()
-    window.document.title = balance
-  } else {
-    window.document.title = 'Please connect wallet'
-    return <div>Please connect wallet</div>
+  if (window.ethereum === undefined) {
+    return <div>Please install MetaMask</div>
   }
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+  if (!address) {
+    connectWallet()
+    window.document.title = 'Please connect wallet'
+    return (
+      <div>
+        <button onClick={connectWallet}>Please connect wallet</button>
+      </div>
+    )
+  }
+
+  getBalance()
+  window.document.title = balance
 
   return (
     <div>
