@@ -5,9 +5,22 @@ function OpenWallet () {
   const [address, setAddress] = useState(0)
   const [balance, setBalance] = useState(0)
 
+  async function getAddress () {
+    try {
+      const [selectedAddress] = await window.ethereum.request({
+        method: 'eth_accounts'
+      })
+      setAddress(selectedAddress)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   async function connectWallet () {
     try {
-      const [selectedAddress] = await window.ethereum.enable()
+      const [selectedAddress] = await window.ethereum.request({
+        method: 'eth_requestAccounts'
+      })
       setAddress(selectedAddress)
     } catch (e) {
       console.error(e)
@@ -28,8 +41,8 @@ function OpenWallet () {
   }
   const provider = new ethers.providers.Web3Provider(window.ethereum)
 
+  getAddress()
   if (!address) {
-    connectWallet()
     window.document.title = 'Please connect wallet'
     return (
       <div>
