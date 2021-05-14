@@ -101,6 +101,11 @@ function OpenWallet () {
   const overallBalance = validatorBalancesSum + Number(balance)
   window.document.title = overallBalance
 
+  const formaterEUR = new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: 'EUR'
+  })
+
   return (
     <div>
       <div>{address}</div>
@@ -112,19 +117,9 @@ function OpenWallet () {
       ))}
       <div>{validatorBalancesSum}</div>
       <div>
-        {overallBalance} (
-        {new Intl.NumberFormat(undefined, {
-          style: 'currency',
-          currency: 'EUR'
-        }).format(priceEUR)}
-        )
+        {overallBalance} ({formaterEUR.format(priceEUR)})
       </div>
-      <div>
-        {new Intl.NumberFormat(undefined, {
-          style: 'currency',
-          currency: 'EUR'
-        }).format(overallBalance * priceEUR)}
-      </div>
+      <div>{formaterEUR.format(overallBalance * priceEUR)}</div>
     </div>
   )
 }
