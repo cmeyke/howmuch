@@ -108,18 +108,19 @@ function OpenWallet () {
 
   return (
     <div>
-      <div>{address}</div>
+      <div>{address}:</div>
       <div>{balance}</div>
       {validatorBalances.map(validator => (
         <div key={validator[0]}>
           {validator[0]}: {validator[1]}
         </div>
       ))}
-      <div>{validatorBalancesSum}</div>
+      <div>Validators sum: {validatorBalancesSum}</div>
+      <div>Overall sum: {overallBalance}</div>
       <div>
-        {overallBalance} ({formaterEUR.format(priceEUR)})
+        {formaterEUR.format(overallBalance * priceEUR)} (
+        {formaterEUR.format(priceEUR)})
       </div>
-      <div>{formaterEUR.format(overallBalance * priceEUR)}</div>
     </div>
   )
 }
