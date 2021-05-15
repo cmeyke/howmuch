@@ -19,6 +19,8 @@ function OpenWallet () {
       .catch(err => {
         console.log(err)
       })
+    getAddress()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -40,6 +42,7 @@ function OpenWallet () {
 
   useEffect(() => {
     if (address) {
+      getBalance()
       axios
         .get(`https://beaconcha.in/api/v1/validator/eth1/${address}`)
         .then(res => {
@@ -49,6 +52,7 @@ function OpenWallet () {
           console.log(err)
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
 
   async function getAddress () {
@@ -87,7 +91,6 @@ function OpenWallet () {
   }
   const provider = new ethers.providers.Web3Provider(window.ethereum)
 
-  getAddress()
   if (!address) {
     window.document.title = 'Please connect wallet'
     return (
@@ -97,7 +100,6 @@ function OpenWallet () {
     )
   }
 
-  getBalance()
   const overallBalance = validatorBalancesSum + Number(balance)
   window.document.title = overallBalance
 
