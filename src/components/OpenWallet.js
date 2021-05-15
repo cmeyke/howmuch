@@ -1,4 +1,5 @@
 import React from 'react'
+import { InputAddress } from './InputAddress'
 
 export const OpenWallet = ({ address, setAddress }) => {
   async function getAddress () {
@@ -32,7 +33,14 @@ export const OpenWallet = ({ address, setAddress }) => {
   // console.log('OpenWallet')
 
   if (window.ethereum === undefined) {
-    return <div>Please install MetaMask</div>
+    return (
+      <div>
+        <div>Please install MetaMask or</div>
+        <div>
+          <InputAddress setAddress={setAddress} />
+        </div>
+      </div>
+    )
   }
 
   if (!address) {
@@ -43,7 +51,10 @@ export const OpenWallet = ({ address, setAddress }) => {
     window.document.title = 'Please connect wallet'
     return (
       <div>
-        <button onClick={connectWallet}>Please connect wallet</button>
+        <button onClick={connectWallet}>Please connect wallet</button> or
+        <div>
+          <InputAddress setAddress={setAddress} />
+        </div>
       </div>
     )
   }

@@ -10,6 +10,7 @@ function App () {
   const [balance, setBalance] = useState(0)
   const [validatorBalances, setValidatorBalances] = useState([])
   const [validatorBalancesSum, setValidatorBalancesSum] = useState(0)
+  const [reload, setReload] = useState(0)
 
   return (
     <div className='App'>
@@ -20,6 +21,7 @@ function App () {
         setBalance={setBalance}
         setValidatorBalances={setValidatorBalances}
         setValidatorBalancesSum={setValidatorBalancesSum}
+        reload={reload}
       />
       <DisplayAssets
         address={address}
@@ -28,6 +30,13 @@ function App () {
         validatorBalances={validatorBalances}
         validatorBalancesSum={validatorBalancesSum}
       />
+      <div>
+        {address ? (
+          <button onClick={() => setReload(reload + 1)}>Reload</button>
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   )
 }

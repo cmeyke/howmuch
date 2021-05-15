@@ -7,7 +7,8 @@ export const GetAssets = ({
   setPriceEUR,
   setBalance,
   setValidatorBalances,
-  setValidatorBalancesSum
+  setValidatorBalancesSum,
+  reload
 }) => {
   const [validators, setValidators] = useState([])
 
@@ -33,9 +34,20 @@ export const GetAssets = ({
     }
   }
 
+  function getNewProvider () {
+    if (window.ethereum === undefined) {
+      const url =
+        'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
+      const customHttpProvider = new ethers.providers.JsonRpcProvider(url)
+      return customHttpProvider
+    } else {
+      return new ethers.providers.Web3Provider(window.ethereum)
+    }
+  }
+
   useEffect(() => {
     if (address) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const provider = getNewProvider()
 
       getBalance(provider)
       getPriceEUR()
@@ -50,7 +62,7 @@ export const GetAssets = ({
         })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address])
+  }, [address, reload])
 
   useEffect(() => {
     if (address) {
