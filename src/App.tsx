@@ -4,11 +4,12 @@ import DisplayAssets from './components/DisplayAssets'
 import { GetAssets } from './components/GetAssest'
 import { OpenWallet } from './components/OpenWallet'
 
-function App () {
+function App() {
   const [address, setAddress] = useState('')
   const [priceEUR, setPriceEUR] = useState(0)
   const [balance, setBalance] = useState(0)
-  const [validatorBalances, setValidatorBalances] = useState([])
+  const validatorBalancesInitialValue: [number, number][] = []
+  const [validatorBalances, setValidatorBalances] = useState(validatorBalancesInitialValue)
   const [validatorBalancesSum, setValidatorBalancesSum] = useState(0)
   const [reload, setReload] = useState(0)
 

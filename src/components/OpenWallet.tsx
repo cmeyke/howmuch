@@ -1,8 +1,14 @@
-import React from 'react'
 import { InputAddress } from './InputAddress'
 
-export const OpenWallet = ({ address, setAddress }) => {
-  async function getAddress () {
+type OpenWalletParameterType = {
+  address: string
+  setAddress: React.Dispatch<React.SetStateAction<string>>
+}
+
+declare let window: any
+
+export const OpenWallet = ({ address, setAddress }: OpenWalletParameterType) => {
+  async function getAddress() {
     try {
       // console.log('getAddress')
       const [selectedAddress] = await window.ethereum.request({
@@ -14,7 +20,7 @@ export const OpenWallet = ({ address, setAddress }) => {
     }
   }
 
-  async function connectWallet () {
+  async function connectWallet() {
     try {
       // console.log('connectWallet')
       const [selectedAddress] = await window.ethereum.request({

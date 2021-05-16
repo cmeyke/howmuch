@@ -2,6 +2,17 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { ethers } from 'ethers'
 
+type GetAssetsParameterType = {
+  address: string
+  setPriceEUR: React.Dispatch<React.SetStateAction<number>>
+  setBalance: React.Dispatch<React.SetStateAction<number>>
+  setValidatorBalances: React.Dispatch<React.SetStateAction<[number, number][]>>
+  setValidatorBalancesSum: React.Dispatch<React.SetStateAction<number>>
+  reload: number
+}
+
+declare let window: any
+
 export const GetAssets = ({
   address,
   setPriceEUR,
@@ -9,10 +20,10 @@ export const GetAssets = ({
   setValidatorBalances,
   setValidatorBalancesSum,
   reload
-}) => {
+}: GetAssetsParameterType) => {
   const [validators, setValidators] = useState([])
 
-  function getPriceEUR () {
+  function getPriceEUR() {
     // console.log('getPriceEUR')
     axios
       .get('https://api.kraken.com/0/public/Ticker?pair=ETHEUR')
@@ -24,7 +35,7 @@ export const GetAssets = ({
       })
   }
 
-  async function getBalance (provider) {
+  async function getBalance(provider: ethers.providers.JsonRpcProvider) {
     try {
       // console.log('getBalance')
       const balance = await provider.getBalance(address)
@@ -34,7 +45,7 @@ export const GetAssets = ({
     }
   }
 
-  function getNewProvider () {
+  function getNewProvider() {
     if (window.ethereum === undefined) {
       const url =
         'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
@@ -55,7 +66,7 @@ export const GetAssets = ({
       axios
         .get(`https://beaconcha.in/api/v1/validator/eth1/${address}`)
         .then(res => {
-          setValidators(res.data.data.map(item => item.validatorindex))
+          setValidators(res.data.data.map((item: any) => item.validatorindex))
         })
         .catch(err => {
           console.log(err)

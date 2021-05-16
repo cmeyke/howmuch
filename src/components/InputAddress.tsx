@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 
-export const InputAddress = ({ setAddress }) => {
+type InputAddressParameterType = {
+  setAddress: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
   const [inputAddress, setInputAddress] = useState('')
 
-  const handleAddressChange = event => {
+  const handleAddressChange = (event: any) => {
     setInputAddress(event.target.value)
   }
 

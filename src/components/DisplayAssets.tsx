@@ -1,12 +1,20 @@
-import React from 'react'
+type DisplayAssetsParameterType = {
+  address: string
+  priceEUR: number
+  balance: number
+  validatorBalances: [number, number][]
+  validatorBalancesSum: number
+}
 
-function DisplayAssets ({
+declare let window: any
+
+function DisplayAssets({
   address,
   priceEUR,
   balance,
   validatorBalances,
   validatorBalancesSum
-}) {
+}: DisplayAssetsParameterType) {
   if (!address) {
     return <div></div>
   }
