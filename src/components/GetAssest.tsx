@@ -37,16 +37,21 @@ export const GetAssets = ({
   }
 
   async function getBalance (provider: ethers.providers.JsonRpcProvider) {
-    try {
-      // console.log('getBalance')
-      const balance = await provider.getBalance(address)
-      setBalance(Number(ethers.utils.formatEther(balance)))
-    } catch (e) {
+    if (address === 'change') {
       setBalance(0)
       setValidatorBalances([])
       setValidatorBalancesSum(0)
-      console.error(e)
-    }
+    } else
+      try {
+        // console.log('getBalance')
+        const balance = await provider.getBalance(address)
+        setBalance(Number(ethers.utils.formatEther(balance)))
+      } catch (e) {
+        setBalance(0)
+        setValidatorBalances([])
+        setValidatorBalancesSum(0)
+        console.error(e)
+      }
   }
 
   function getNewProvider () {
