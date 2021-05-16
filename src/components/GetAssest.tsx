@@ -66,7 +66,7 @@ export const GetAssets = ({
   }
 
   useEffect(() => {
-    if (address) {
+    if (address && address !== 'change') {
       const provider = getNewProvider()
 
       getBalance(provider)
