@@ -21,7 +21,8 @@ export const GetAssets = ({
   setValidatorBalancesSum,
   reload
 }: GetAssetsParameterType) => {
-  const [validators, setValidators] = useState([])
+  const validatorsInitialValue: number[] = []
+  const [validators, setValidators] = useState(validatorsInitialValue)
 
   function getPriceEUR() {
     // console.log('getPriceEUR')
