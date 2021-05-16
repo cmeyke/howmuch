@@ -11,10 +11,25 @@ export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
     setInputAddress(event.target.value)
   }
 
+  const handleKeyDown = (event: any) => {
+    if (event.keyCode === 13 && inputAddress) setAddress(inputAddress)
+  }
+
   return (
     <div>
-      <input type='text' value={inputAddress} onChange={handleAddressChange} />
-      <button onClick={() => setAddress(inputAddress)}>Provide address</button>
+      <input
+        type='text'
+        value={inputAddress}
+        onChange={handleAddressChange}
+        onKeyDown={handleKeyDown}
+      />
+      <button
+        onClick={() => {
+          if (inputAddress) setAddress(inputAddress)
+        }}
+      >
+        Provide address
+      </button>
     </div>
   )
 }

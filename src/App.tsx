@@ -3,13 +3,16 @@ import './App.css'
 import DisplayAssets from './components/DisplayAssets'
 import { GetAssets } from './components/GetAssest'
 import { OpenWallet } from './components/OpenWallet'
+import { UserInput } from './components/UserInput'
 
-function App() {
+function App () {
   const [address, setAddress] = useState('')
   const [priceEUR, setPriceEUR] = useState(0)
   const [balance, setBalance] = useState(0)
   const validatorBalancesInitialValue: [number, number][] = []
-  const [validatorBalances, setValidatorBalances] = useState(validatorBalancesInitialValue)
+  const [validatorBalances, setValidatorBalances] = useState(
+    validatorBalancesInitialValue
+  )
   const [validatorBalancesSum, setValidatorBalancesSum] = useState(0)
   const [reload, setReload] = useState(0)
 
@@ -31,13 +34,12 @@ function App() {
         validatorBalances={validatorBalances}
         validatorBalancesSum={validatorBalancesSum}
       />
-      <div>
-        {address ? (
-          <button onClick={() => setReload(reload + 1)}>Reload</button>
-        ) : (
-          <div></div>
-        )}
-      </div>
+      <UserInput
+        address={address}
+        setAddress={setAddress}
+        reload={reload}
+        setReload={setReload}
+      />
     </div>
   )
 }

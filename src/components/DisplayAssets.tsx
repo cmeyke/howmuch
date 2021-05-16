@@ -6,7 +6,7 @@ type DisplayAssetsParameterType = {
   validatorBalancesSum: number
 }
 
-function DisplayAssets({
+function DisplayAssets ({
   address,
   priceEUR,
   balance,
@@ -26,6 +26,8 @@ function DisplayAssets({
     style: 'currency',
     currency: 'EUR'
   })
+
+  if (address === 'change') return <div></div>
 
   return (
     <div>

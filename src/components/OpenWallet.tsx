@@ -7,8 +7,11 @@ type OpenWalletParameterType = {
 
 declare let window: any
 
-export const OpenWallet = ({ address, setAddress }: OpenWalletParameterType) => {
-  async function getAddress() {
+export const OpenWallet = ({
+  address,
+  setAddress
+}: OpenWalletParameterType) => {
+  async function getAddress () {
     try {
       // console.log('getAddress')
       const [selectedAddress] = await window.ethereum.request({
@@ -20,7 +23,7 @@ export const OpenWallet = ({ address, setAddress }: OpenWalletParameterType) => 
     }
   }
 
-  async function connectWallet() {
+  async function connectWallet () {
     try {
       // console.log('connectWallet')
       const [selectedAddress] = await window.ethereum.request({
@@ -32,7 +35,7 @@ export const OpenWallet = ({ address, setAddress }: OpenWalletParameterType) => 
     }
   }
 
-  if (address) {
+  if (address && address !== 'change') {
     return <div></div>
   }
 
@@ -53,7 +56,7 @@ export const OpenWallet = ({ address, setAddress }: OpenWalletParameterType) => 
     getAddress()
   }
 
-  if (!address) {
+  if (!address || address === 'change') {
     window.document.title = 'Please connect wallet'
     return (
       <div>

@@ -24,7 +24,7 @@ export const GetAssets = ({
   const validatorsInitialValue: number[] = []
   const [validators, setValidators] = useState(validatorsInitialValue)
 
-  function getPriceEUR() {
+  function getPriceEUR () {
     // console.log('getPriceEUR')
     axios
       .get('https://api.kraken.com/0/public/Ticker?pair=ETHEUR')
@@ -36,17 +36,20 @@ export const GetAssets = ({
       })
   }
 
-  async function getBalance(provider: ethers.providers.JsonRpcProvider) {
+  async function getBalance (provider: ethers.providers.JsonRpcProvider) {
     try {
       // console.log('getBalance')
       const balance = await provider.getBalance(address)
       setBalance(Number(ethers.utils.formatEther(balance)))
     } catch (e) {
+      setBalance(0)
+      setValidatorBalances([])
+      setValidatorBalancesSum(0)
       console.error(e)
     }
   }
 
-  function getNewProvider() {
+  function getNewProvider () {
     if (window.ethereum === undefined) {
       const url =
         'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
