@@ -5,7 +5,7 @@ import { GetAssets } from './components/GetAssest'
 import { OpenWallet } from './components/OpenWallet'
 
 function App () {
-  const [address, setAddress] = useState(0)
+  const [address, setAddress] = useState('')
   const [priceEUR, setPriceEUR] = useState(0)
   const [balance, setBalance] = useState(0)
   const [validatorBalances, setValidatorBalances] = useState([])

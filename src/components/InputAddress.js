@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 export const InputAddress = ({ setAddress }) => {
-  const [inputAddress, setInputAddress] = useState(0)
+  const [inputAddress, setInputAddress] = useState('')
 
   const handleAddressChange = event => {
     setInputAddress(event.target.value)
