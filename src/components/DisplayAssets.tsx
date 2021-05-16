@@ -6,8 +6,6 @@ type DisplayAssetsParameterType = {
   validatorBalancesSum: number
 }
 
-declare let window: any
-
 function DisplayAssets({
   address,
   priceEUR,
@@ -22,7 +20,7 @@ function DisplayAssets({
   // console.log('DisplayAssets')
 
   const overallBalance = validatorBalancesSum + balance
-  window.document.title = overallBalance
+  window.document.title = overallBalance.toString()
 
   const formaterEUR = new Intl.NumberFormat(undefined, {
     style: 'currency',
