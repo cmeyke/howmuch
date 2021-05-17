@@ -1,4 +1,3 @@
-// import React, { useState, useEffect, useRef } from 'react'
 import React, { useState } from 'react'
 
 type InputAddressParameterType = {
@@ -8,19 +7,13 @@ type InputAddressParameterType = {
 export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
   const [inputAddress, setInputAddress] = useState('')
 
-  const handleAddressChange = (event: any) => {
+  const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> = event => {
     setInputAddress(event.target.value)
   }
 
-  const handleKeyDown = (event: any) => {
-    if (event.keyCode === 13 && inputAddress) setAddress(inputAddress)
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
+    if (event.key === 'Enter' && inputAddress) setAddress(inputAddress)
   }
-
-  // const inputRef = useRef<HTMLInputElement>(null)
-
-  // useEffect(() => {
-  //   inputRef?.current?.focus()
-  // }, [])
 
   return (
     <div>
