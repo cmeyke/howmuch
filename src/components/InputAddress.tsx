@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 type InputAddressParameterType = {
   setAddress: React.Dispatch<React.SetStateAction<string>>
@@ -15,9 +15,16 @@ export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
     if (event.keyCode === 13 && inputAddress) setAddress(inputAddress)
   }
 
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    inputRef?.current?.focus()
+  }, [])
+
   return (
     <div>
       <input
+        ref={inputRef}
         type='text'
         value={inputAddress}
         onChange={handleAddressChange}
