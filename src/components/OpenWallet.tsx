@@ -35,10 +35,7 @@ export const OpenWallet = ({
     }
   }
 
-  if (address && address !== 'change') {
-    return <div></div>
-  }
-
+  if (address && address !== 'change') return <div></div>
   // console.log('OpenWallet')
 
   if (window.ethereum === undefined) {

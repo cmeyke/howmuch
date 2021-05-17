@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 import DisplayAssets from './components/DisplayAssets'
 import { GetAssets } from './components/GetAssest'
@@ -15,6 +15,21 @@ function App () {
   )
   const [validatorBalancesSum, setValidatorBalancesSum] = useState(0)
   const [reload, setReload] = useState(0)
+
+  useEffect(() => {
+    if (address && address !== 'change') {
+      // console.log(`store: "${address}"`)
+      localStorage.setItem('address', address)
+    }
+  }, [address])
+
+  if (!address) {
+    const savedAddress = localStorage.getItem('address')
+    if (savedAddress) {
+      // console.log(`set: "${savedAddress}"`)
+      setAddress(savedAddress)
+    }
+  }
 
   return (
     <div className='App'>
