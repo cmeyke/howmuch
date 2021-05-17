@@ -19,6 +19,8 @@ function DisplayAssets ({
 
   // console.log('DisplayAssets')
 
+  if (address === 'change') return <div></div>
+
   const overallBalance = validatorBalancesSum + balance
   window.document.title = overallBalance.toString()
 
@@ -26,8 +28,6 @@ function DisplayAssets ({
     style: 'currency',
     currency: 'EUR'
   })
-
-  if (address === 'change') return <div></div>
 
   return (
     <div>
