@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import DisplayAssets from './components/DisplayAssets'
 import { GetAssets } from './components/GetAssest'
@@ -9,11 +9,9 @@ function App () {
   const [address, setAddress] = useState('')
   const [priceEUR, setPriceEUR] = useState(0)
   const [balance, setBalance] = useState(0)
-  const validatorBalancesInitialValue: [number, number][] = []
   const [validatorBalances, setValidatorBalances] = useState(
-    validatorBalancesInitialValue
+    [] as [number, number, number][]
   )
-  const [validatorBalancesSum, setValidatorBalancesSum] = useState(0)
   const [reload, setReload] = useState(0)
 
   useEffect(() => {
@@ -39,7 +37,6 @@ function App () {
         setPriceEUR={setPriceEUR}
         setBalance={setBalance}
         setValidatorBalances={setValidatorBalances}
-        setValidatorBalancesSum={setValidatorBalancesSum}
         reload={reload}
       />
       <DisplayAssets
@@ -47,7 +44,6 @@ function App () {
         priceEUR={priceEUR}
         balance={balance}
         validatorBalances={validatorBalances}
-        validatorBalancesSum={validatorBalancesSum}
       />
       <UserInput
         address={address}

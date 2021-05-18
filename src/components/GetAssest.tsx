@@ -6,8 +6,9 @@ type GetAssetsParameterType = {
   address: string
   setPriceEUR: React.Dispatch<React.SetStateAction<number>>
   setBalance: React.Dispatch<React.SetStateAction<number>>
-  setValidatorBalances: React.Dispatch<React.SetStateAction<[number, number][]>>
-  setValidatorBalancesSum: React.Dispatch<React.SetStateAction<number>>
+  setValidatorBalances: React.Dispatch<
+    React.SetStateAction<[number, number, number][]>
+  >
   reload: number
 }
 
@@ -18,7 +19,6 @@ export const GetAssets = ({
   setPriceEUR,
   setBalance,
   setValidatorBalances,
-  setValidatorBalancesSum,
   reload
 }: GetAssetsParameterType) => {
   const validatorsInitialValue: number[] = []
@@ -44,7 +44,6 @@ export const GetAssets = ({
     } catch (e) {
       setBalance(0)
       setValidatorBalances([])
-      setValidatorBalancesSum(0)
       console.error(e)
     }
   }
@@ -83,14 +82,15 @@ export const GetAssets = ({
     if (address) {
       // console.log('useEffect: get validator balances')
       setValidatorBalances([])
-      setValidatorBalancesSum(0)
       validators.forEach(validator =>
         axios
           .get(`https://beaconcha.in/api/v1/validator/${validator}`)
           .then(res => {
             const balance = res.data.data.balance / 1000000000
-            setValidatorBalances(v => v.concat([[validator, balance]]))
-            setValidatorBalancesSum(s => s + balance)
+            const effectiveBalance = res.data.data.effectivebalance / 1000000000
+            setValidatorBalances(v =>
+              v.concat([[validator, balance, effectiveBalance]])
+            )
           })
           .catch(err => {
             console.log(err)
