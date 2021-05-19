@@ -9,7 +9,6 @@ type GetAssetsParameterType = {
   setValidatorBalances: React.Dispatch<
     React.SetStateAction<[number, number, number][]>
   >
-  reload: number
 }
 
 declare let window: any
@@ -18,8 +17,7 @@ export const GetAssets = ({
   address,
   setPriceEUR,
   setBalance,
-  setValidatorBalances,
-  reload
+  setValidatorBalances
 }: GetAssetsParameterType) => {
   const validatorsInitialValue: number[] = []
   const [validators, setValidators] = useState(validatorsInitialValue)
@@ -76,7 +74,7 @@ export const GetAssets = ({
         })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, reload])
+  }, [address])
 
   useEffect(() => {
     if (address) {

@@ -3,7 +3,7 @@ import './App.css'
 import DisplayAssets from './components/DisplayAssets'
 import { GetAssets } from './components/GetAssest'
 import { OpenWallet } from './components/OpenWallet'
-import { UserInput } from './components/UserInput'
+import ApplicationBar from './components/ApplicationBar'
 
 function App () {
   const [address, setAddress] = useState('')
@@ -12,7 +12,6 @@ function App () {
   const [validatorBalances, setValidatorBalances] = useState(
     [] as [number, number, number][]
   )
-  const [reload, setReload] = useState(0)
 
   useEffect(() => {
     if (address && address !== 'change') {
@@ -31,25 +30,20 @@ function App () {
 
   return (
     <div className='App'>
+      <ApplicationBar address={address} setAddress={setAddress} />
       <OpenWallet address={address} setAddress={setAddress} />
       <GetAssets
         address={address}
         setPriceEUR={setPriceEUR}
         setBalance={setBalance}
         setValidatorBalances={setValidatorBalances}
-        reload={reload}
+        // reload={reload}
       />
       <DisplayAssets
         address={address}
         priceEUR={priceEUR}
         balance={balance}
         validatorBalances={validatorBalances}
-      />
-      <UserInput
-        address={address}
-        setAddress={setAddress}
-        reload={reload}
-        setReload={setReload}
       />
     </div>
   )
