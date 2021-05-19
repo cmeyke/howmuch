@@ -2,21 +2,21 @@ import React from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import Home from '@material-ui/icons/Home'
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1
     },
-    title: {
-      flexGrow: 1
-    },
     toolbar: {
       minHeight: '10px'
+    },
+    toolbarButtons: {
+      borderRadius: 16,
+      marginLeft: 'auto'
     }
   })
 )
@@ -44,17 +44,19 @@ export default function ApplicationBar ({
           >
             <Home />
           </IconButton>
-          <Typography variant='h6' className={classes.title}>
-            {address !== 'change' ? address : ''}
-          </Typography>
-          <IconButton
-            edge='end'
-            color='inherit'
-            aria-label='wallet'
-            onClick={() => setAddress('change')}
-          >
-            <AccountBalanceIcon />
-          </IconButton>
+          {address !== 'change' ? (
+            <Button
+              variant='contained'
+              color='default'
+              className={classes.toolbarButtons}
+              aria-label='address'
+              onClick={() => setAddress('change')}
+            >
+              {address}
+            </Button>
+          ) : (
+            <div></div>
+          )}
         </Toolbar>
       </AppBar>
     </div>
