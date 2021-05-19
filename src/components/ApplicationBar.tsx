@@ -44,7 +44,7 @@ export default function ApplicationBar ({
           >
             <Home />
           </IconButton>
-          {address !== 'change' ? (
+          {address && address !== 'change' ? (
             <Button
               variant='contained'
               color='default'
