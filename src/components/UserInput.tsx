@@ -36,7 +36,7 @@ export const UserInput = ({
     <div className={classes.root}>
       {address ? (
         <Grid container justify='center' spacing={1}>
-          <Grid item>
+          <Grid key={1} item>
             <Button
               color='primary'
               variant='contained'
@@ -45,7 +45,7 @@ export const UserInput = ({
               Reload
             </Button>
           </Grid>
-          <Grid item>
+          <Grid key={2} item>
             <Button
               color='primary'
               variant='contained'
