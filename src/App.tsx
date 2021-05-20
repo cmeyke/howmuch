@@ -10,7 +10,7 @@ function App () {
   const [priceEUR, setPriceEUR] = useState(0)
   const [balance, setBalance] = useState(0)
   const [validatorBalances, setValidatorBalances] = useState(
-    [] as [number, number, number][]
+    [] as [number, number, number, number][]
   )
 
   useEffect(() => {

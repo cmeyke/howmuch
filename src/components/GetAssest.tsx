@@ -7,7 +7,7 @@ type GetAssetsParameterType = {
   setPriceEUR: React.Dispatch<React.SetStateAction<number>>
   setBalance: React.Dispatch<React.SetStateAction<number>>
   setValidatorBalances: React.Dispatch<
-    React.SetStateAction<[number, number, number][]>
+    React.SetStateAction<[number, number, number, number][]>
   >
 }
 
@@ -80,20 +80,33 @@ export const GetAssets = ({
     if (address) {
       // console.log('useEffect: get validator balances')
       setValidatorBalances([])
-      validators.forEach(validator =>
+
+      validators.forEach(validator => {
         axios
           .get(`https://beaconcha.in/api/v1/validator/${validator}`)
           .then(res => {
-            const balance = res.data.data.balance / 1000000000
-            const effectiveBalance = res.data.data.effectivebalance / 1000000000
-            setValidatorBalances(v =>
-              v.concat([[validator, balance, effectiveBalance]])
-            )
+            const validatorBalance: [number, number, number, number] = [
+              validator,
+              res.data.data.balance / 1000000000,
+              res.data.data.effectivebalance / 1000000000,
+              0
+            ]
+            axios
+              .get(
+                `https://beaconcha.in/api/v1/validator/${validator}/attestationefficiency`
+              )
+              .then(res => {
+                validatorBalance[3] = res.data.data.attestation_efficiency
+                setValidatorBalances(v => v.concat([validatorBalance]))
+              })
+              .catch(err => {
+                console.log(err)
+              })
           })
           .catch(err => {
             console.log(err)
           })
-      )
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [validators])

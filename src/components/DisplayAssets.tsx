@@ -2,7 +2,7 @@ type DisplayAssetsParameterType = {
   address: string
   priceEUR: number
   balance: number
-  validatorBalances: [number, number, number][]
+  validatorBalances: [number, number, number, number][]
 }
 
 function DisplayAssets ({
@@ -39,7 +39,8 @@ function DisplayAssets ({
       <div>{balance}</div>
       {validatorBalances.map(validator => (
         <div key={validator[0]}>
-          {validator[0]}: {validator[1]} ({validator[1] - validator[2]})
+          {validator[0]}: {validator[1]} ({validator[1] - validator[2]}){' '}
+          {validator[3] * 100}%
         </div>
       ))}
       <div>Total Earnings: {totalEarnings}</div>
