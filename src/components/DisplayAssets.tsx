@@ -40,7 +40,7 @@ function DisplayAssets ({
       {validatorBalances.map(validator => (
         <div key={validator[0]}>
           {validator[0]}: {validator[1]} ({validator[1] - validator[2]}){' '}
-          {validator[3] * 100}%
+          {100 - (validator[3] * 100 - 100)}%
         </div>
       ))}
       <div>Total Earnings: {totalEarnings}</div>

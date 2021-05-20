@@ -97,6 +97,7 @@ export const GetAssets = ({
               )
               .then(res => {
                 validatorBalance[3] = res.data.data.attestation_efficiency
+                console.log(res.data.data.attestation_efficiency)
                 setValidatorBalances(v => v.concat([validatorBalance]))
               })
               .catch(err => {
