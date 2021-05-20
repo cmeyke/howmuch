@@ -1,4 +1,5 @@
-import { InputAddress } from './InputAddress'
+import { ethers } from 'ethers'
+import { InputAddress, checkAndSetAddress } from './InputAddress'
 
 type OpenWalletParameterType = {
   address: string
@@ -17,7 +18,7 @@ export const OpenWallet = ({
       const [selectedAddress] = await window.ethereum.request({
         method: 'eth_accounts'
       })
-      setAddress(selectedAddress)
+      checkAndSetAddress(ethers.utils.getAddress(selectedAddress), setAddress)
     } catch (e) {
       console.error(e)
     }
@@ -29,7 +30,7 @@ export const OpenWallet = ({
       const [selectedAddress] = await window.ethereum.request({
         method: 'eth_requestAccounts'
       })
-      setAddress(selectedAddress)
+      checkAndSetAddress(ethers.utils.getAddress(selectedAddress), setAddress)
     } catch (e) {
       console.error(e)
     }

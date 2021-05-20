@@ -33,14 +33,12 @@ export default function ApplicationBar ({
   setAddress
 }: ApplicationBarType) {
   const classes = useStyles()
-  let displayAddress = ''
-  if (ethers.utils.isAddress(address)) {
-    displayAddress = ethers.utils.getAddress(address)
-    displayAddress = `${displayAddress.slice(0, 6)}...${displayAddress.slice(
-      address.length - 4,
-      address.length
-    )}`
-  }
+  const displayAddress = ethers.utils.isAddress(address)
+    ? `${address.slice(0, 6)}...${address.slice(
+        address.length - 4,
+        address.length
+      )}`
+    : ''
 
   return (
     <div className={classes.root}>
@@ -54,7 +52,7 @@ export default function ApplicationBar ({
           >
             <Home />
           </IconButton>
-          {address && address !== 'change' ? (
+          {displayAddress ? (
             <Button
               variant='contained'
               color='default'
@@ -62,7 +60,7 @@ export default function ApplicationBar ({
               aria-label='address'
               onClick={() => setAddress('change')}
             >
-              {displayAddress ? displayAddress : 'Connect a wallet'}
+              {displayAddress}
             </Button>
           ) : (
             <div></div>
