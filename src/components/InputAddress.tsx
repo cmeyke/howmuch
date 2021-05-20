@@ -1,5 +1,9 @@
 import { ethers } from 'ethers'
 import React, { useState } from 'react'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 
 type InputAddressParameterType = {
   setAddress: React.Dispatch<React.SetStateAction<string>>
@@ -13,6 +17,20 @@ export const checkAndSetAddress = (
     setAddress(ethers.utils.getAddress(address))
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    margin: {
+      margin: theme.spacing(2)
+    },
+    display: {
+      display: 'flex'
+    },
+    borderRadius: {
+      borderRadius: 16
+    }
+  })
+)
+
 export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
   const [inputAddress, setInputAddress] = useState('')
 
@@ -25,23 +43,37 @@ export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
       checkAndSetAddress(inputAddress, setAddress)
   }
 
+  const classes = useStyles()
+
   return (
-    <div>
-      <input
-        // ref={inputRef}
-        autoFocus
-        type='text'
-        value={inputAddress}
-        onChange={handleAddressChange}
-        onKeyDown={handleKeyDown}
-      />
-      <button
-        onClick={() => {
-          if (inputAddress) checkAndSetAddress(inputAddress, setAddress)
-        }}
-      >
-        Provide address
-      </button>
+    <div className={classes.margin}>
+      <Grid container spacing={4} justify='center'>
+        <Grid item xs={5}>
+          <TextField
+            size='small'
+            autoFocus
+            fullWidth
+            autoComplete='off'
+            id='address'
+            label='ETH1 Address'
+            variant='outlined'
+            value={inputAddress}
+            onChange={handleAddressChange}
+            onKeyDown={handleKeyDown}
+          />
+        </Grid>
+        <Grid item className={classes.display}>
+          <Button
+            className={classes.borderRadius}
+            variant='contained'
+            onClick={() => {
+              if (inputAddress) checkAndSetAddress(inputAddress, setAddress)
+            }}
+          >
+            Provide address
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   )
 }
