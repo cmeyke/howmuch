@@ -96,7 +96,8 @@ export const GetAssets = ({
                 `https://beaconcha.in/api/v1/validator/${validator}/attestationefficiency`
               )
               .then(res => {
-                validatorBalance[3] = res.data.data.attestation_efficiency
+                validatorBalance[3] =
+                  100 - (res.data.data.attestation_efficiency * 100 - 100)
                 setValidatorBalances(v => v.concat([validatorBalance]))
               })
               .catch(err => {
