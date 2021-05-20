@@ -37,12 +37,14 @@ function DisplayAssets ({
     <div>
       <div>{address}:</div>
       <div>{balance}</div>
-      {validatorBalances.map(validator => (
-        <div key={validator[0]}>
-          {validator[0]}: {validator[1]} ({validator[1] - validator[2]}){' '}
-          {validator[3]}%
-        </div>
-      ))}
+      {validatorBalances
+        .sort((a, b) => a[0] - b[0])
+        .map(validator => (
+          <div key={validator[0]}>
+            {validator[0]}: {validator[1]} ({validator[1] - validator[2]}){' '}
+            {validator[3]}%
+          </div>
+        ))}
       <div>Total Earnings: {totalEarnings}</div>
       <div>{formaterEUR.format(totalEarnings * priceEUR)}</div>
       <div>Sum validators: {validatorBalancesSum}</div>
