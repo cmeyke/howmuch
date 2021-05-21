@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { ethers } from 'ethers'
+import web3 from 'web3'
 
 type GetAssetsParameterType = {
   address: string
@@ -10,8 +11,6 @@ type GetAssetsParameterType = {
     React.SetStateAction<[number, number, number, number][]>
   >
 }
-
-const ethereum = (window as any).ethereum
 
 export const GetAssets = ({
   address,
@@ -47,13 +46,13 @@ export const GetAssets = ({
   }
 
   function getNewProvider () {
-    if (ethereum === undefined) {
+    if (web3.givenProvider === null) {
       const url =
         'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
       const customHttpProvider = new ethers.providers.JsonRpcProvider(url)
       return customHttpProvider
     } else {
-      return new ethers.providers.Web3Provider(ethereum)
+      return new ethers.providers.Web3Provider(web3.givenProvider)
     }
   }
 
@@ -67,7 +66,11 @@ export const GetAssets = ({
       axios
         .get(`https://beaconcha.in/api/v1/validator/eth1/${address}`)
         .then(res => {
-          setValidators(res.data.data.map((item: any) => item.validatorindex))
+          setValidators(
+            res.data.data.map(
+              (item: { validatorindex: number }) => item.validatorindex
+            )
+          )
         })
         .catch(err => {
           console.log(err)
