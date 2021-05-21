@@ -11,7 +11,7 @@ type GetAssetsParameterType = {
   >
 }
 
-declare let window: any
+const ethereum = (window as any).ethereum
 
 export const GetAssets = ({
   address,
@@ -47,13 +47,13 @@ export const GetAssets = ({
   }
 
   function getNewProvider () {
-    if (window.ethereum === undefined) {
+    if (ethereum === undefined) {
       const url =
         'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
       const customHttpProvider = new ethers.providers.JsonRpcProvider(url)
       return customHttpProvider
     } else {
-      return new ethers.providers.Web3Provider(window.ethereum)
+      return new ethers.providers.Web3Provider(ethereum)
     }
   }
 

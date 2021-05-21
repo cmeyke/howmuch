@@ -6,7 +6,7 @@ type OpenWalletParameterType = {
   setAddress: React.Dispatch<React.SetStateAction<string>>
 }
 
-declare let window: any
+const ethereum = (window as any).ethereum
 
 export const OpenWallet = ({
   address,
@@ -15,7 +15,7 @@ export const OpenWallet = ({
   async function getAddress () {
     try {
       // console.log('getAddress')
-      const [selectedAddress] = await window.ethereum.request({
+      const [selectedAddress] = await ethereum.request({
         method: 'eth_accounts'
       })
       checkAndSetAddress(ethers.utils.getAddress(selectedAddress), setAddress)
@@ -27,7 +27,7 @@ export const OpenWallet = ({
   async function connectWallet () {
     try {
       // console.log('connectWallet')
-      const [selectedAddress] = await window.ethereum.request({
+      const [selectedAddress] = await ethereum.request({
         method: 'eth_requestAccounts'
       })
       checkAndSetAddress(ethers.utils.getAddress(selectedAddress), setAddress)
@@ -39,7 +39,7 @@ export const OpenWallet = ({
   if (address && address !== 'change') return <div></div>
   // console.log('OpenWallet')
 
-  if (window.ethereum === undefined) {
+  if (ethereum === undefined) {
     return (
       <div>
         <div>Please install MetaMask or</div>
