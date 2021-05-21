@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { ethers } from 'ethers'
-import web3 from 'web3'
+import Web3 from 'web3'
 
 type GetAssetsParameterType = {
   address: string
@@ -33,26 +32,26 @@ export const GetAssets = ({
       })
   }
 
-  async function getBalance (provider: ethers.providers.JsonRpcProvider) {
-    try {
-      // console.log('getBalance')
-      const balance = await provider.getBalance(address)
-      setBalance(Number(ethers.utils.formatEther(balance)))
-    } catch (e) {
-      setBalance(0)
-      setValidatorBalances([])
-      console.error(e)
-    }
+  function getBalance (provider: Web3) {
+    // console.log('getBalance')
+    provider.eth
+      .getBalance(address)
+      .then(balance => {
+        setBalance(Number(Web3.utils.fromWei(balance)))
+      })
+      .catch(err => {
+        setBalance(0)
+        console.log(err)
+      })
   }
 
   function getNewProvider () {
-    if (web3.givenProvider === null) {
+    if (Web3.givenProvider === null) {
       const url =
         'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
-      const customHttpProvider = new ethers.providers.JsonRpcProvider(url)
-      return customHttpProvider
+      return new Web3(url)
     } else {
-      return new ethers.providers.Web3Provider(web3.givenProvider)
+      return new Web3(Web3.givenProvider)
     }
   }
 

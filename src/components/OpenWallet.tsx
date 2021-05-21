@@ -1,5 +1,4 @@
-import { ethers } from 'ethers'
-import web3 from 'web3'
+import Web3 from 'web3'
 import { InputAddress, checkAndSetAddress } from './InputAddress'
 
 type OpenWalletParameterType = {
@@ -14,10 +13,10 @@ export const OpenWallet = ({
   async function getAddress () {
     try {
       // console.log('getAddress')
-      const [selectedAddress] = await web3.givenProvider.request({
+      const [selectedAddress] = await Web3.givenProvider.request({
         method: 'eth_accounts'
       })
-      checkAndSetAddress(ethers.utils.getAddress(selectedAddress), setAddress)
+      checkAndSetAddress(selectedAddress, setAddress)
     } catch (e) {
       console.error(e)
     }
@@ -26,10 +25,10 @@ export const OpenWallet = ({
   async function connectWallet () {
     try {
       // console.log('connectWallet')
-      const [selectedAddress] = await web3.givenProvider.request({
+      const [selectedAddress] = await Web3.givenProvider.request({
         method: 'eth_requestAccounts'
       })
-      checkAndSetAddress(ethers.utils.getAddress(selectedAddress), setAddress)
+      checkAndSetAddress(selectedAddress, setAddress)
     } catch (e) {
       console.error(e)
     }
@@ -38,7 +37,7 @@ export const OpenWallet = ({
   if (address && address !== 'change') return <div></div>
   // console.log('OpenWallet')
 
-  if (web3.givenProvider === null) {
+  if (Web3.givenProvider === null) {
     return (
       <div>
         <div>Please install MetaMask or</div>

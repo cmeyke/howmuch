@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import Home from '@material-ui/icons/Home'
 import Brightness7 from '@material-ui/icons/Brightness7'
 import Brightness4 from '@material-ui/icons/Brightness4'
-import { ethers } from 'ethers'
+import Web3 from 'web3'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,7 +39,7 @@ export default function ApplicationBar ({
   setDark
 }: ApplicationBarType) {
   const classes = useStyles()
-  const displayAddress = ethers.utils.isAddress(address)
+  const displayAddress = Web3.utils.isAddress(address)
     ? `${address.slice(0, 6)}...${address.slice(
         address.length - 4,
         address.length

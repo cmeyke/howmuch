@@ -1,9 +1,9 @@
-import { ethers } from 'ethers'
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import Web3 from 'web3'
 
 type InputAddressParameterType = {
   setAddress: React.Dispatch<React.SetStateAction<string>>
@@ -13,8 +13,8 @@ export const checkAndSetAddress = (
   address: string,
   setAddress: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  if (ethers.utils.isAddress(address))
-    setAddress(ethers.utils.getAddress(address))
+  if (Web3.utils.isAddress(address))
+    setAddress(Web3.utils.toChecksumAddress(address))
 }
 
 const useStyles = makeStyles((theme: Theme) =>
