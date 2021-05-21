@@ -32,9 +32,22 @@ export const GetAssets = ({
       })
   }
 
-  function getBalance (provider: Web3) {
+  function getNewProvider () {
+    // console.log('getNewProvider')
+    if (Web3.givenProvider === null) {
+      const url =
+        'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
+      return new Web3(url)
+    } else {
+      return new Web3(Web3.givenProvider)
+    }
+  }
+
+  const web3 = getNewProvider()
+
+  function getBalance () {
     // console.log('getBalance')
-    provider.eth
+    web3.eth
       .getBalance(address)
       .then(balance => {
         setBalance(Number(Web3.utils.fromWei(balance)))
@@ -45,21 +58,9 @@ export const GetAssets = ({
       })
   }
 
-  function getNewProvider () {
-    if (Web3.givenProvider === null) {
-      const url =
-        'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
-      return new Web3(url)
-    } else {
-      return new Web3(Web3.givenProvider)
-    }
-  }
-
   useEffect(() => {
     if (address && address !== 'change') {
-      const provider = getNewProvider()
-
-      getBalance(provider)
+      getBalance()
       getPriceEUR()
       // console.log('useEffect: get validators')
       axios
