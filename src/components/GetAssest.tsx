@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Web3 from "web3";
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+import Web3 from "web3"
 
 type GetAssetsParameterType = {
-  address: string;
-  setPriceEUR: React.Dispatch<React.SetStateAction<number>>;
-  setBalance: React.Dispatch<React.SetStateAction<number>>;
+  address: string
+  setPriceEUR: React.Dispatch<React.SetStateAction<number>>
+  setBalance: React.Dispatch<React.SetStateAction<number>>
   setValidatorBalances: React.Dispatch<
     React.SetStateAction<[number, number, number, number][]>
-  >;
-};
+  >
+}
 
 export const GetAssets = ({
   address,
@@ -17,18 +17,18 @@ export const GetAssets = ({
   setBalance,
   setValidatorBalances,
 }: GetAssetsParameterType) => {
-  const validatorsInitialValue: number[] = [];
-  const [validators, setValidators] = useState(validatorsInitialValue);
+  const validatorsInitialValue: number[] = []
+  const [validators, setValidators] = useState(validatorsInitialValue)
 
   async function getPriceEUR() {
     // console.log('getPriceEUR')
     try {
       const res = await axios.get(
         "https://api.kraken.com/0/public/Ticker?pair=ETHEUR"
-      );
-      setPriceEUR(res.data.result.XETHZEUR.c[0]);
+      )
+      setPriceEUR(res.data.result.XETHZEUR.c[0])
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
@@ -36,23 +36,23 @@ export const GetAssets = ({
     // console.log('getNewProvider')
     if (Web3.givenProvider === null) {
       const url =
-        "https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV";
-      return new Web3(url);
+        "https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV"
+      return new Web3(url)
     } else {
-      return new Web3(Web3.givenProvider);
+      return new Web3(Web3.givenProvider)
     }
   }
 
-  const web3 = getNewProvider();
+  const web3 = getNewProvider()
 
   async function getBalance() {
     // console.log('getBalance')
     try {
-      const balance = await web3.eth.getBalance(address);
-      setBalance(Number(Web3.utils.fromWei(balance)));
+      const balance = await web3.eth.getBalance(address)
+      setBalance(Number(Web3.utils.fromWei(balance)))
     } catch (err) {
-      setBalance(0);
-      console.error(err);
+      setBalance(0)
+      console.error(err)
     }
   }
 
@@ -60,60 +60,60 @@ export const GetAssets = ({
     try {
       const res = await axios.get(
         `https://beaconcha.in/api/v1/validator/eth1/${address}`
-      );
+      )
       setValidators(
         res.data.data.map(
           (item: { validatorindex: number }) => item.validatorindex
         )
-      );
+      )
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
   useEffect(() => {
     if (address && address !== "change") {
-      getBalance();
-      getPriceEUR();
-      getValidators();
+      getBalance()
+      getPriceEUR()
+      getValidators()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, [address])
 
   async function getValidatorBalances(validator: number) {
     try {
       const validatorData = await axios.get(
         `https://beaconcha.in/api/v1/validator/${validator}`
-      );
+      )
       const validatorEfficiency = await axios.get(
         `https://beaconcha.in/api/v1/validator/${validator}/attestationefficiency`
-      );
+      )
       const validatorBalance: [number, number, number, number] = [
         validator,
         validatorData.data.data.balance / 1000000000,
         validatorData.data.data.effectivebalance / 1000000000,
         100 -
           (validatorEfficiency.data.data.attestation_efficiency * 100 - 100),
-      ];
-      setValidatorBalances((v) => v.concat([validatorBalance]));
+      ]
+      setValidatorBalances((v) => v.concat([validatorBalance]))
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
   useEffect(() => {
     if (address) {
       // console.log('useEffect: get validator balances')
-      setValidatorBalances([]);
+      setValidatorBalances([])
 
       validators.forEach((validator) => {
-        getValidatorBalances(validator);
-      });
+        getValidatorBalances(validator)
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [validators]);
+  }, [validators])
 
   // console.log('GetAssets')
 
-  return <div></div>;
-};
+  return <div></div>
+}
