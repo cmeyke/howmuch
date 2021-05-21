@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Web3 from 'web3'
+import React, { useState } from "react"
+import TextField from "@material-ui/core/TextField"
+import Button from "@material-ui/core/Button"
+import { createStyles, Theme, makeStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
+import Typography from "@material-ui/core/Typography"
+import Web3 from "web3"
 
 type InputAddressParameterType = {
   setAddress: React.Dispatch<React.SetStateAction<string>>
+  connectWallet(): Promise<void>
 }
 
 export const checkAndSetAddress = (
@@ -20,26 +22,33 @@ export const checkAndSetAddress = (
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     margin: {
-      margin: theme.spacing(2)
+      margin: theme.spacing(2),
     },
     display: {
-      display: 'flex'
+      display: "flex",
     },
     borderRadius: {
-      borderRadius: 16
-    }
+      borderRadius: 16,
+    },
   })
 )
 
-export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
-  const [inputAddress, setInputAddress] = useState('')
+export const InputAddress = ({
+  setAddress,
+  connectWallet,
+}: InputAddressParameterType) => {
+  const [inputAddress, setInputAddress] = useState("")
 
-  const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
     setInputAddress(event.target.value)
   }
 
-  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
-    if (event.key === 'Enter' && inputAddress)
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    if (event.key === "Enter" && inputAddress)
       checkAndSetAddress(inputAddress, setAddress)
   }
 
@@ -47,30 +56,42 @@ export const InputAddress = ({ setAddress }: InputAddressParameterType) => {
 
   return (
     <div className={classes.margin}>
-      <Grid container spacing={4} justify='center'>
-        <Grid item xs={5}>
+      <Grid container spacing={2} justify="center" alignItems="center">
+        <Grid key={1} item xs={5}>
           <TextField
-            size='small'
+            size="small"
             autoFocus
             fullWidth
-            autoComplete='off'
-            id='address'
-            label='ETH1 Address'
-            variant='outlined'
+            autoComplete="off"
+            id="address"
+            label="ETH1 Address"
+            variant="outlined"
             value={inputAddress}
             onChange={handleAddressChange}
             onKeyDown={handleKeyDown}
           />
         </Grid>
-        <Grid item className={classes.display}>
+        <Grid key={2} item className={classes.display}>
           <Button
             className={classes.borderRadius}
-            variant='contained'
+            variant="contained"
             onClick={() => {
               if (inputAddress) checkAndSetAddress(inputAddress, setAddress)
             }}
           >
-            Provide address
+            Go
+          </Button>
+        </Grid>
+        <Grid key={3} item>
+          <Typography>or</Typography>
+        </Grid>
+        <Grid key={4} item className={classes.display}>
+          <Button
+            className={classes.borderRadius}
+            variant="contained"
+            onClick={connectWallet}
+          >
+            Connect wallet
           </Button>
         </Grid>
       </Grid>
