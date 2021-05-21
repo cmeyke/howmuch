@@ -5,6 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Home from '@material-ui/icons/Home'
+import Brightness7 from '@material-ui/icons/Brightness7'
+import Brightness4 from '@material-ui/icons/Brightness4'
 import { ethers } from 'ethers'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,11 +28,15 @@ const useStyles = makeStyles((theme: Theme) =>
 type ApplicationBarType = {
   address: string
   setAddress: React.Dispatch<React.SetStateAction<string>>
+  dark: boolean
+  setDark: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function ApplicationBar ({
   address,
-  setAddress
+  setAddress,
+  dark,
+  setDark
 }: ApplicationBarType) {
   const classes = useStyles()
   const displayAddress = ethers.utils.isAddress(address)
@@ -39,6 +45,10 @@ export default function ApplicationBar ({
         address.length
       )}`
     : ''
+
+  const toogleTheme = () => {
+    setDark(!dark)
+  }
 
   return (
     <div className={classes.root}>
@@ -51,6 +61,9 @@ export default function ApplicationBar ({
             onClick={() => window.location.reload()}
           >
             <Home />
+          </IconButton>
+          <IconButton color='inherit' onClick={toogleTheme}>
+            {dark ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {displayAddress ? (
             <Button

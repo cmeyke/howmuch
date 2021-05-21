@@ -4,6 +4,8 @@ import DisplayAssets from './components/DisplayAssets'
 import { GetAssets } from './components/GetAssest'
 import { OpenWallet } from './components/OpenWallet'
 import ApplicationBar from './components/ApplicationBar'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
 function App () {
   const [address, setAddress] = useState('')
@@ -12,6 +14,19 @@ function App () {
   const [validatorBalances, setValidatorBalances] = useState(
     [] as [number, number, number, number][]
   )
+  const [dark, setDark] = useState(true)
+
+  const darkTheme = createMuiTheme({
+    palette: {
+      type: 'dark'
+    }
+  })
+
+  const lightTheme = createMuiTheme({
+    palette: {
+      type: 'light'
+    }
+  })
 
   useEffect(() => {
     if (address && address !== 'change') {
@@ -28,23 +43,33 @@ function App () {
     }
   }
 
+  const appliedTheme = createMuiTheme(dark ? darkTheme : lightTheme)
+
   return (
     <div className='App'>
-      <ApplicationBar address={address} setAddress={setAddress} />
-      <OpenWallet address={address} setAddress={setAddress} />
-      <GetAssets
-        address={address}
-        setPriceEUR={setPriceEUR}
-        setBalance={setBalance}
-        setValidatorBalances={setValidatorBalances}
-        // reload={reload}
-      />
-      <DisplayAssets
-        address={address}
-        priceEUR={priceEUR}
-        balance={balance}
-        validatorBalances={validatorBalances}
-      />
+      <ThemeProvider theme={appliedTheme}>
+        <CssBaseline />
+        <ApplicationBar
+          address={address}
+          setAddress={setAddress}
+          dark={dark}
+          setDark={setDark}
+        />
+        <OpenWallet address={address} setAddress={setAddress} />
+        <GetAssets
+          address={address}
+          setPriceEUR={setPriceEUR}
+          setBalance={setBalance}
+          setValidatorBalances={setValidatorBalances}
+          // reload={reload}
+        />
+        <DisplayAssets
+          address={address}
+          priceEUR={priceEUR}
+          balance={balance}
+          validatorBalances={validatorBalances}
+        />
+      </ThemeProvider>
     </div>
   )
 }
