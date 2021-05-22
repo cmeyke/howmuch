@@ -22,17 +22,17 @@ function DisplayAssets ({
   const formaterEUR = new Intl.NumberFormat(undefined, {
     style: 'currency',
     currency: 'EUR'
-  })
+  }).format
 
   const formaterETH = new Intl.NumberFormat(undefined, {
     minimumFractionDigits: 4,
     maximumFractionDigits: 4
-  })
+  }).format
 
   const formaterPercent = new Intl.NumberFormat(undefined, {
     style: 'percent',
     maximumFractionDigits: 2
-  })
+  }).format
 
   let totalEarnings = 0
   let validatorBalancesSum = 0
@@ -46,23 +46,22 @@ function DisplayAssets ({
   return (
     <div>
       <div>{address}:</div>
-      <div>{formaterETH.format(balance)}</div>
+      <div>{formaterETH(balance)}</div>
       {validatorBalances
         .sort((a, b) => a[0] - b[0])
         .map(validator => (
           <div key={validator[0]}>
-            {validator[0]}: {formaterETH.format(validator[1])} (
-            {formaterETH.format(validator[1] - validator[2])}){' '}
-            {formaterPercent.format(validator[3])}
+            {validator[0]}: {formaterETH(validator[1])} (
+            {formaterETH(validator[1] - validator[2])}){' '}
+            {formaterPercent(validator[3])}
           </div>
         ))}
-      <div>Total Earnings: {formaterETH.format(totalEarnings)}</div>
-      <div>{formaterEUR.format(totalEarnings * priceEUR)}</div>
-      <div>Sum validators: {formaterETH.format(validatorBalancesSum)}</div>
-      <div>Sum totals: {formaterETH.format(overallBalance)}</div>
+      <div>Total Earnings: {formaterETH(totalEarnings)}</div>
+      <div>{formaterEUR(totalEarnings * priceEUR)}</div>
+      <div>Sum validators: {formaterETH(validatorBalancesSum)}</div>
+      <div>Sum totals: {formaterETH(overallBalance)}</div>
       <div>
-        {formaterEUR.format(overallBalance * priceEUR)} (
-        {formaterEUR.format(priceEUR)})
+        {formaterEUR(overallBalance * priceEUR)} ({formaterEUR(priceEUR)})
       </div>
     </div>
   )
