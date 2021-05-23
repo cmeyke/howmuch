@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
 import Home from '@material-ui/icons/Home'
 import Brightness7 from '@material-ui/icons/Brightness7'
 import Brightness4 from '@material-ui/icons/Brightness4'
@@ -11,9 +12,6 @@ import Web3 from 'web3'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1
-    },
     toolbar: {
       minHeight: '10px'
     },
@@ -51,9 +49,9 @@ export default function ApplicationBar ({
   }
 
   return (
-    <div className={classes.root}>
-      <AppBar position='static'>
-        <Toolbar className={classes.toolbar}>
+    <AppBar position='static'>
+      <Toolbar className={classes.toolbar}>
+        <Tooltip title='Reload'>
           <IconButton
             edge='start'
             color='inherit'
@@ -62,24 +60,26 @@ export default function ApplicationBar ({
           >
             <Home />
           </IconButton>
+        </Tooltip>
+        <Tooltip title='Toggle light/dark theme'>
           <IconButton color='inherit' onClick={toogleTheme}>
             {dark ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
-          {displayAddress ? (
-            <Button
-              variant='contained'
-              color='default'
-              className={classes.toolbarButtons}
-              aria-label='address'
-              onClick={() => setAddress('change')}
-            >
-              {displayAddress}
-            </Button>
-          ) : (
-            <div></div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
+        </Tooltip>
+        {displayAddress ? (
+          <Button
+            variant='contained'
+            color='default'
+            className={classes.toolbarButtons}
+            aria-label='address'
+            onClick={() => setAddress('change')}
+          >
+            {displayAddress}
+          </Button>
+        ) : (
+          <React.Fragment></React.Fragment>
+        )}
+      </Toolbar>
+    </AppBar>
   )
 }
