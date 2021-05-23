@@ -1,3 +1,19 @@
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Paper from '@material-ui/core/Paper'
+
+const useStyles = makeStyles({
+  table: {
+    // minWidth: 650
+  }
+})
+
 type DisplayAssetsParameterType = {
   address: string
   priceEUR: number
@@ -11,11 +27,11 @@ function DisplayAssets ({
   balance,
   validatorBalances
 }: DisplayAssetsParameterType) {
+  const classes = useStyles()
+
   if (!address) {
     return <div></div>
   }
-
-  // console.log('DisplayAssets')
 
   if (address === 'change') return <div></div>
 
@@ -43,27 +59,98 @@ function DisplayAssets ({
   const overallBalance = validatorBalancesSum + balance
   window.document.title = overallBalance.toString()
 
+  function createDataAssets (name: string, eth: string, fiat: string) {
+    return { name, eth, fiat }
+  }
+
+  function createDataValidators (
+    index: number,
+    eth: string,
+    earnings: string,
+    efficiency: string
+  ) {
+    return { index, eth, earnings, efficiency }
+  }
+
+  const assetRows = [
+    createDataAssets(
+      'Net Worth',
+      formaterETH(overallBalance),
+      formaterEUR(overallBalance * priceEUR)
+    ),
+    createDataAssets(
+      'Earnings',
+      formaterETH(totalEarnings),
+      formaterEUR(totalEarnings * priceEUR)
+    ),
+    createDataAssets(
+      'Wallet',
+      formaterETH(balance),
+      formaterEUR(balance * priceEUR)
+    ),
+    createDataAssets(
+      'Prove of Work',
+      formaterETH(validatorBalancesSum),
+      formaterEUR(validatorBalancesSum * priceEUR)
+    )
+  ]
+
+  const validatorRows = validatorBalances
+    .sort((a, b) => a[0] - b[0])
+    .map(validator =>
+      createDataValidators(
+        validator[0],
+        formaterETH(validator[1]),
+        formaterETH(validator[1] - validator[2]),
+        formaterPercent(validator[3])
+      )
+    )
+
   return (
-    <div>
-      <div>{address}:</div>
-      <div>{formaterETH(balance)}</div>
-      {validatorBalances
-        .sort((a, b) => a[0] - b[0])
-        .map(validator => (
-          <div key={validator[0]}>
-            {validator[0]}: {formaterETH(validator[1])} (
-            {formaterETH(validator[1] - validator[2])}){' '}
-            {formaterPercent(validator[3])}
-          </div>
-        ))}
-      <div>Total Earnings: {formaterETH(totalEarnings)}</div>
-      <div>{formaterEUR(totalEarnings * priceEUR)}</div>
-      <div>Sum validators: {formaterETH(validatorBalancesSum)}</div>
-      <div>Sum totals: {formaterETH(overallBalance)}</div>
-      <div>
-        {formaterEUR(overallBalance * priceEUR)} ({formaterEUR(priceEUR)})
-      </div>
-    </div>
+    <TableContainer component={Paper}>
+      <Table className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Price: {formaterEUR(priceEUR)}</TableCell>
+            <TableCell>Balance</TableCell>
+            <TableCell>Value</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {assetRows.map(row => (
+            <TableRow key={row.name}>
+              <TableCell component='th' scope='row'>
+                {row.name}
+              </TableCell>
+              <TableCell align='left'>{row.eth}</TableCell>
+              <TableCell align='left'>{row.fiat}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Table className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Validator</TableCell>
+            <TableCell>Balance</TableCell>
+            <TableCell>Earnings</TableCell>
+            <TableCell>Efficiency</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {validatorRows.map(row => (
+            <TableRow key={row.index}>
+              <TableCell component='th' scope='row'>
+                {row.index}
+              </TableCell>
+              <TableCell align='left'>{row.eth}</TableCell>
+              <TableCell align='left'>{row.earnings}</TableCell>
+              <TableCell align='left'>{row.efficiency}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 
