@@ -1,13 +1,13 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
+import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import Table from "@material-ui/core/Table"
+import TableBody from "@material-ui/core/TableBody"
+import TableCell from "@material-ui/core/TableCell"
+import TableContainer from "@material-ui/core/TableContainer"
+import TableHead from "@material-ui/core/TableHead"
+import TableRow from "@material-ui/core/TableRow"
+import Paper from "@material-ui/core/Paper"
+import Typography from "@material-ui/core/Typography"
 
 const useStyles = makeStyles({
   cell: {
@@ -34,11 +34,11 @@ function DisplayAssets({
     return <div></div>
   }
 
-  if (address === 'change') return <div></div>
+  if (address === "change") return <div></div>
 
   const formaterEUR = new Intl.NumberFormat(undefined, {
-    style: 'currency',
-    currency: 'EUR',
+    style: "currency",
+    currency: "EUR",
   }).format
 
   const formaterETH = new Intl.NumberFormat(undefined, {
@@ -47,18 +47,18 @@ function DisplayAssets({
   }).format
 
   const formaterPercent = new Intl.NumberFormat(undefined, {
-    style: 'percent',
+    style: "percent",
     maximumFractionDigits: 2,
   }).format
 
   let totalEarnings = 0
   let validatorBalancesSum = 0
-  validatorBalances.forEach(validator => {
+  validatorBalances.forEach((validator) => {
     totalEarnings += validator[1] - validator[2]
     validatorBalancesSum += validator[1]
   })
   const overallBalance = validatorBalancesSum + balance
-  window.document.title = overallBalance.toString()
+  // window.document.title = overallBalance.toString()
 
   function createDataValidators(
     index: number,
@@ -71,7 +71,7 @@ function DisplayAssets({
 
   const validatorRows = validatorBalances
     .sort((a, b) => a[0] - b[0])
-    .map(validator =>
+    .map((validator) =>
       createDataValidators(
         validator[0],
         formaterETH(validator[1]),
@@ -213,7 +213,7 @@ function DisplayAssets({
           </TableRow>
         </TableHead>
         <TableBody>
-          {validatorRows.map(row => (
+          {validatorRows.map((row) => (
             <TableRow key={row.index}>
               <TableCell align="left" className={classes.cell}>
                 {row.index}
