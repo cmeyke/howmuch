@@ -7,11 +7,12 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles({
-  table: {
-    // minWidth: 650
-  }
+  cell: {
+    width: 110,
+  },
 })
 
 type DisplayAssetsParameterType = {
@@ -21,11 +22,11 @@ type DisplayAssetsParameterType = {
   validatorBalances: [number, number, number, number][]
 }
 
-function DisplayAssets ({
+function DisplayAssets({
   address,
   priceEUR,
   balance,
-  validatorBalances
+  validatorBalances,
 }: DisplayAssetsParameterType) {
   const classes = useStyles()
 
@@ -37,17 +38,17 @@ function DisplayAssets ({
 
   const formaterEUR = new Intl.NumberFormat(undefined, {
     style: 'currency',
-    currency: 'EUR'
+    currency: 'EUR',
   }).format
 
   const formaterETH = new Intl.NumberFormat(undefined, {
     minimumFractionDigits: 4,
-    maximumFractionDigits: 4
+    maximumFractionDigits: 4,
   }).format
 
   const formaterPercent = new Intl.NumberFormat(undefined, {
     style: 'percent',
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   }).format
 
   let totalEarnings = 0
@@ -59,11 +60,7 @@ function DisplayAssets ({
   const overallBalance = validatorBalancesSum + balance
   window.document.title = overallBalance.toString()
 
-  function createDataAssets (name: string, eth: string, fiat: string) {
-    return { name, eth, fiat }
-  }
-
-  function createDataValidators (
+  function createDataValidators(
     index: number,
     eth: string,
     earnings: string,
@@ -71,29 +68,6 @@ function DisplayAssets ({
   ) {
     return { index, eth, earnings, efficiency }
   }
-
-  const assetRows = [
-    createDataAssets(
-      'Net Worth',
-      formaterETH(overallBalance),
-      formaterEUR(overallBalance * priceEUR)
-    ),
-    createDataAssets(
-      'Earnings',
-      formaterETH(totalEarnings),
-      formaterEUR(totalEarnings * priceEUR)
-    ),
-    createDataAssets(
-      'Wallet',
-      formaterETH(balance),
-      formaterEUR(balance * priceEUR)
-    ),
-    createDataAssets(
-      'Prove of Work',
-      formaterETH(validatorBalancesSum),
-      formaterEUR(validatorBalancesSum * priceEUR)
-    )
-  ]
 
   const validatorRows = validatorBalances
     .sort((a, b) => a[0] - b[0])
@@ -108,44 +82,151 @@ function DisplayAssets ({
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Price: {formaterEUR(priceEUR)}</TableCell>
-            <TableCell>Balance</TableCell>
-            <TableCell>Value</TableCell>
+            <TableCell>
+              <Typography variant="caption">Net Worth</Typography>
+              <Typography variant="h5">
+                {formaterEUR(overallBalance * priceEUR)}
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+      </Table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <Typography>
+                Wallet - {formaterEUR(balance * priceEUR)}
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+      </Table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell align="left" className={classes.cell}>
+              Asset
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Balance
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Price
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Value
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {assetRows.map(row => (
-            <TableRow key={row.name}>
-              <TableCell component='th' scope='row'>
-                {row.name}
-              </TableCell>
-              <TableCell align='left'>{row.eth}</TableCell>
-              <TableCell align='left'>{row.fiat}</TableCell>
-            </TableRow>
-          ))}
+          <TableRow>
+            <TableCell align="left" className={classes.cell}>
+              ETH
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              {formaterETH(balance)}
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              {formaterEUR(priceEUR)}
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              {formaterEUR(balance * priceEUR)}
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Validator</TableCell>
-            <TableCell>Balance</TableCell>
-            <TableCell>Earnings</TableCell>
-            <TableCell>Efficiency</TableCell>
+            <TableCell>
+              <Typography>
+                Staked - {formaterEUR(validatorBalancesSum * priceEUR)}
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+      </Table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell align="left" className={classes.cell}>
+              Asset
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Balance
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Price
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Value
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell align="left" className={classes.cell}>
+              ETH in Eth2 Deposit
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              {formaterETH(validatorBalancesSum)}
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              {formaterEUR(priceEUR)}
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              {formaterEUR(validatorBalancesSum * priceEUR)}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <Typography>
+                Earnings - {formaterEUR(totalEarnings * priceEUR)}
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+      </Table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell align="left" className={classes.cell}>
+              Validator
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Balance
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Earnings
+            </TableCell>
+            <TableCell align="left" className={classes.cell}>
+              Efficiency
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {validatorRows.map(row => (
             <TableRow key={row.index}>
-              <TableCell component='th' scope='row'>
+              <TableCell align="left" className={classes.cell}>
                 {row.index}
               </TableCell>
-              <TableCell align='left'>{row.eth}</TableCell>
-              <TableCell align='left'>{row.earnings}</TableCell>
-              <TableCell align='left'>{row.efficiency}</TableCell>
+              <TableCell align="left" className={classes.cell}>
+                {row.eth}
+              </TableCell>
+              <TableCell align="left" className={classes.cell}>
+                {row.earnings}
+              </TableCell>
+              <TableCell align="left" className={classes.cell}>
+                {row.efficiency}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
