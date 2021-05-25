@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: "auto",
       textTransform: "none",
     },
+    menuItem: {
+      fontSize: "small",
+    },
   })
 )
 
@@ -108,8 +111,15 @@ export default function ApplicationBar({
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleCloseCopy}>Copy</MenuItem>
-              <MenuItem onClick={handleCloseChange}>Change</MenuItem>
+              <MenuItem className={classes.menuItem} onClick={handleCloseCopy}>
+                Copy
+              </MenuItem>
+              <MenuItem
+                className={classes.menuItem}
+                onClick={handleCloseChange}
+              >
+                Change
+              </MenuItem>
             </Menu>
           </React.Fragment>
         ) : (
