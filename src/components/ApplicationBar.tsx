@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: "none",
     },
     menuItem: {
-      fontSize: "small",
+      fontSize: window.screen.availWidth >= 1440 ? "small" : "fontSize",
     },
   })
 )
