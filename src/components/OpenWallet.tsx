@@ -44,7 +44,7 @@ export const OpenWallet = ({
   }
 
   if (!address || address === "change") {
-    window.document.title = "Connect wallet"
+    // window.document.title = "Connect wallet"
     return (
       <InputAddress setAddress={setAddress} connectWallet={connectWallet} />
     )
