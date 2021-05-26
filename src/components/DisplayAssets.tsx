@@ -187,6 +187,7 @@ function DisplayAssets({
           )}
         </TableBody>
       </Table>
+      {displayTableCategory(`Validators - ${validatorRows.length}`)}
       <Table>
         <TableHead>
           {displayTableRow(
