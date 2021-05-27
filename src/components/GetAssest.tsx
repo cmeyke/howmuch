@@ -15,12 +15,12 @@ export const GetAssets = ({
   address,
   setPriceEUR,
   setBalance,
-  setValidatorBalances
+  setValidatorBalances,
 }: GetAssetsParameterType) => {
   const validatorsInitialValue: number[] = []
   const [validators, setValidators] = useState(validatorsInitialValue)
 
-  async function getPriceEUR () {
+  async function getPriceEUR() {
     // console.log('getPriceEUR')
     try {
       const res = await axios.get(
@@ -32,11 +32,10 @@ export const GetAssets = ({
     }
   }
 
-  function getNewProvider () {
+  function getNewProvider() {
     // console.log('getNewProvider')
     if (Web3.givenProvider === null) {
-      const url =
-        'https://eth-mainnet.alchemyapi.io/v2/8j-Eu5zxTrvO6_WrCBu3iVuOR7jtC7EV'
+      const url = `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`
       return new Web3(url)
     } else {
       return new Web3(Web3.givenProvider)
@@ -45,7 +44,7 @@ export const GetAssets = ({
 
   const web3 = getNewProvider()
 
-  async function getBalance () {
+  async function getBalance() {
     // console.log('getBalance')
     try {
       const balance = await web3.eth.getBalance(address)
@@ -56,7 +55,7 @@ export const GetAssets = ({
     }
   }
 
-  async function getValidators () {
+  async function getValidators() {
     try {
       const res = await axios.get(
         `https://beaconcha.in/api/v1/validator/eth1/${address}`
@@ -80,7 +79,7 @@ export const GetAssets = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
 
-  async function getValidatorBalances (validator: number) {
+  async function getValidatorBalances(validator: number) {
     try {
       const validatorData = await axios.get(
         `https://beaconcha.in/api/v1/validator/${validator}`
@@ -92,7 +91,7 @@ export const GetAssets = ({
         validator,
         validatorData.data.data.balance / 1000000000,
         validatorData.data.data.effectivebalance / 1000000000,
-        1 - (validatorEfficiency.data.data.attestation_efficiency - 1)
+        1 - (validatorEfficiency.data.data.attestation_efficiency - 1),
       ]
       setValidatorBalances(v => v.concat([validatorBalance]))
     } catch (err) {
