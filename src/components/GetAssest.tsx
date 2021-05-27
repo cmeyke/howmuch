@@ -45,7 +45,7 @@ export const GetAssets = ({
   const web3 = getNewProvider()
 
   async function getBalance() {
-    // console.log('getBalance')
+    console.log('getBalance')
     try {
       const balance = await web3.eth.getBalance(address)
       setBalance(Number(Web3.utils.fromWei(balance)))
