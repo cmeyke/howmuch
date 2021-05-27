@@ -93,7 +93,7 @@ export const InputAddress = ({
                 Go
               </Button>
             </Grid>
-            {!(window as any).ethereum ? (
+            {(window as any).ethereum ? (
               <React.Fragment>
                 <Grid key={3} item>
                   <Typography>or</Typography>
