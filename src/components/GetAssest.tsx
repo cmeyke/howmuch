@@ -35,8 +35,11 @@ export const GetAssets = ({
   function getNewProvider() {
     // console.log('getNewProvider')
     if (!(window as any).ethereum) {
-      const url = `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`
-      return new ethers.providers.JsonRpcProvider(url)
+      // const url = `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`
+      // return new ethers.providers.JsonRpcProvider(url)
+      return ethers.getDefaultProvider('homestead', {
+        alchemy: process.env.REACT_APP_ALCHEMY_API_KEY,
+      })
     } else {
       return new ethers.providers.Web3Provider((window as any).ethereum)
     }
