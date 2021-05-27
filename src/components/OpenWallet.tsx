@@ -12,7 +12,7 @@ export const OpenWallet = ({
   setAddress,
 }: OpenWalletParameterType) => {
   async function getAddress() {
-    if (!givenProvider)
+    if (givenProvider)
       try {
         // console.log('getAddress')
         const [selectedAddress] = await givenProvider.request({
@@ -25,7 +25,7 @@ export const OpenWallet = ({
   }
 
   async function connectWallet() {
-    if (!givenProvider)
+    if (givenProvider)
       try {
         // console.log('connectWallet')
         const [selectedAddress] = await givenProvider.request({
