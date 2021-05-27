@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Web3 from 'web3'
+import { ethers } from 'ethers'
 
 type GetAssetsParameterType = {
   address: string
@@ -34,21 +34,21 @@ export const GetAssets = ({
 
   function getNewProvider() {
     // console.log('getNewProvider')
-    if (Web3.givenProvider === null) {
+    if (!(window as any).ethereum) {
       const url = `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`
-      return new Web3(url)
+      return new ethers.providers.JsonRpcProvider(url)
     } else {
-      return new Web3(Web3.givenProvider)
+      return new ethers.providers.Web3Provider((window as any).ethereum)
     }
   }
 
-  const web3 = getNewProvider()
+  const provider = getNewProvider()
 
   async function getBalance() {
-    console.log('getBalance')
+    // console.log('getBalance')
     try {
-      const balance = await web3.eth.getBalance(address)
-      setBalance(Number(Web3.utils.fromWei(balance)))
+      const balance = await provider.getBalance(address)
+      setBalance(Number(ethers.utils.formatEther(balance)))
     } catch (err) {
       setBalance(0)
       console.error(err)
@@ -93,7 +93,7 @@ export const GetAssets = ({
         validatorData.data.data.effectivebalance / 1000000000,
         1 - (validatorEfficiency.data.data.attestation_efficiency - 1),
       ]
-      setValidatorBalances(v => v.concat([validatorBalance]))
+      setValidatorBalances((v) => v.concat([validatorBalance]))
     } catch (err) {
       console.error(err)
     }
@@ -104,7 +104,7 @@ export const GetAssets = ({
       // console.log('useEffect: get validator balances')
       setValidatorBalances([])
 
-      validators.forEach(validator => {
+      validators.forEach((validator) => {
         getValidatorBalances(validator)
       })
     }

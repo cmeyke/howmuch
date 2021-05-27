@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import Web3 from 'web3'
+import { ethers } from 'ethers'
 
 type InputAddressParameterType = {
   setAddress: React.Dispatch<React.SetStateAction<string>>
@@ -15,38 +15,42 @@ export const checkAndSetAddress = (
   address: string,
   setAddress: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  if (Web3.utils.isAddress(address))
-    setAddress(Web3.utils.toChecksumAddress(address))
+  if (ethers.utils.isAddress(address))
+    setAddress(ethers.utils.getAddress(address))
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: theme.spacing(4)
+      margin: theme.spacing(4),
     },
     margin: {
-      margin: theme.spacing(2)
+      margin: theme.spacing(2),
     },
     display: {
-      display: 'flex'
+      display: 'flex',
     },
     borderRadius: {
-      borderRadius: 16
-    }
+      borderRadius: 16,
+    },
   })
 )
 
 export const InputAddress = ({
   setAddress,
-  connectWallet
+  connectWallet,
 }: InputAddressParameterType) => {
   const [inputAddress, setInputAddress] = useState('')
 
-  const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
     setInputAddress(event.target.value)
   }
 
-  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
+    event
+  ) => {
     if (event.key === 'Enter' && inputAddress)
       checkAndSetAddress(inputAddress, setAddress)
   }
@@ -89,7 +93,7 @@ export const InputAddress = ({
                 Go
               </Button>
             </Grid>
-            {Web3.givenProvider !== null ? (
+            {!(window as any).ethereum ? (
               <React.Fragment>
                 <Grid key={3} item>
                   <Typography>or</Typography>
