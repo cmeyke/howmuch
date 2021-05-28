@@ -39,6 +39,9 @@ export const GetAssets = ({
       // return new ethers.providers.JsonRpcProvider(url)
       return ethers.getDefaultProvider('homestead', {
         alchemy: process.env.REACT_APP_ALCHEMY_API_KEY,
+        etherscan: process.env.REACT_APP_ETHERSCAN_API_KEY,
+        infura: process.env.REACT_APP_INFURA_PROJECT_ID,
+        pocket: process.env.REACT_APP_POCKET_APP_KEY,
       })
     } else {
       return new ethers.providers.Web3Provider((window as any).ethereum)
@@ -96,7 +99,7 @@ export const GetAssets = ({
         validatorData.data.data.effectivebalance / 1000000000,
         1 - (validatorEfficiency.data.data.attestation_efficiency - 1),
       ]
-      setValidatorBalances((v) => v.concat([validatorBalance]))
+      setValidatorBalances(v => v.concat([validatorBalance]))
     } catch (err) {
       console.error(err)
     }
@@ -107,7 +110,7 @@ export const GetAssets = ({
       // console.log('useEffect: get validator balances')
       setValidatorBalances([])
 
-      validators.forEach((validator) => {
+      validators.forEach(validator => {
         getValidatorBalances(validator)
       })
     }
