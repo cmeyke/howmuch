@@ -21,12 +21,13 @@ export const GetAssets = ({
   const [validators, setValidators] = useState(validatorsInitialValue)
 
   async function getPriceEUR() {
-    // console.log('getPriceEUR')
     try {
-      const res = await axios.get(
-        'https://api.kraken.com/0/public/Ticker?pair=ETHEUR'
-      )
-      setPriceEUR(res.data.result.XETHZEUR.c[0])
+      // const url = 'https://api.kraken.com/0/public/Ticker?pair=ETHEUR'
+      const url =
+        'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur'
+      const res = await axios.get(url)
+      // setPriceEUR(res.data.result.XETHZEUR.c[0])
+      setPriceEUR(res.data.ethereum.eur)
     } catch (err) {
       console.error(err)
     }
