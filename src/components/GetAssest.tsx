@@ -42,7 +42,7 @@ export const GetAssets = ({
         alchemy: process.env.REACT_APP_ALCHEMY_API_KEY,
         etherscan: process.env.REACT_APP_ETHERSCAN_API_KEY,
         infura: process.env.REACT_APP_INFURA_PROJECT_ID,
-        pocket: process.env.REACT_APP_POCKET_APP_KEY,
+        // pocket: process.env.REACT_APP_POCKET_APP_KEY,
       })
     } else {
       return new ethers.providers.Web3Provider((window as any).ethereum)
