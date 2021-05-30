@@ -4,7 +4,8 @@ import { ethers } from 'ethers'
 
 type GetAssetsParameterType = {
   address: string
-  setPriceEUR: React.Dispatch<React.SetStateAction<number>>
+  setPriceFiat: React.Dispatch<React.SetStateAction<number>>
+  fiat: string
   setBalance: React.Dispatch<React.SetStateAction<number>>
   setValidatorBalances: React.Dispatch<
     React.SetStateAction<[number, number, number, number][]>
@@ -13,23 +14,38 @@ type GetAssetsParameterType = {
 
 export const GetAssets = ({
   address,
-  setPriceEUR,
+  setPriceFiat,
+  fiat,
   setBalance,
   setValidatorBalances,
 }: GetAssetsParameterType) => {
   const validatorsInitialValue: number[] = []
   const [validators, setValidators] = useState(validatorsInitialValue)
 
-  async function getPriceEUR() {
-    try {
-      // const url = 'https://api.kraken.com/0/public/Ticker?pair=ETHEUR'
-      const url =
-        'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur'
-      const res = await axios.get(url)
-      // setPriceEUR(res.data.result.XETHZEUR.c[0])
-      setPriceEUR(res.data.ethereum.eur)
-    } catch (err) {
-      console.error(err)
+  async function getPriceFiat() {
+    switch (fiat) {
+      case 'EUR':
+        try {
+          const url =
+            'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur'
+          const res = await axios.get(url)
+          setPriceFiat(res.data.ethereum.eur)
+        } catch (err) {
+          console.error(err)
+        }
+        break
+      case 'USD':
+        try {
+          const url =
+            'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd'
+          const res = await axios.get(url)
+          setPriceFiat(res.data.ethereum.usd)
+        } catch (err) {
+          console.error(err)
+        }
+        break
+      default:
+        break
     }
   }
 
@@ -74,13 +90,18 @@ export const GetAssets = ({
   }
 
   useEffect(() => {
-    if (address && address !== 'change') {
+    if (address) {
       getBalance()
-      getPriceEUR()
+      getPriceFiat()
       getValidators()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
+
+  useEffect(() => {
+    if (address) getPriceFiat()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fiat])
 
   async function getValidatorBalances(validator: number) {
     try {

@@ -19,11 +19,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbarButtons: {
       borderRadius: 16,
-      marginLeft: 'auto',
       textTransform: 'none',
     },
     menuItem: {
       fontSize: window.screen.availWidth >= 1440 ? 'small' : 'fontSize',
+    },
+    currency: {
+      borderRadius: 16,
+      textTransform: 'none',
+      marginRight: '16px',
     },
   })
 )
@@ -31,6 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
 type ApplicationBarType = {
   address: string
   setAddress: React.Dispatch<React.SetStateAction<string>>
+  fiat: string
+  setFiat: React.Dispatch<React.SetStateAction<string>>
   dark: boolean
   setDark: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -38,28 +44,50 @@ type ApplicationBarType = {
 export default function ApplicationBar({
   address,
   setAddress,
+  fiat,
+  setFiat,
   dark,
   setDark,
 }: ApplicationBarType) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [addrAnchorEl, setAddrAnchorEl] = useState<null | HTMLElement>(null)
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
+  const handleClickAddr = (event: MouseEvent<HTMLButtonElement>) => {
+    setAddrAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
-    setAnchorEl(null)
+  const handleCloseAddr = () => {
+    setAddrAnchorEl(null)
   }
 
   const handleCloseCopy = () => {
     navigator.clipboard.writeText(address)
-    setAnchorEl(null)
+    setAddrAnchorEl(null)
   }
 
   const handleCloseChange = () => {
     setAddress('')
     localStorage.removeItem('address')
-    setAnchorEl(null)
+    setAddrAnchorEl(null)
+  }
+
+  const [fiatAnchorEl, setFiatAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleFiatClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setFiatAnchorEl(event.currentTarget)
+  }
+
+  const handleFiatClose = () => {
+    setFiatAnchorEl(null)
+  }
+
+  const handleFiatUSD = () => {
+    setFiat('USD')
+    setFiatAnchorEl(null)
+  }
+
+  const handleFiatEUR = () => {
+    setFiat('EUR')
+    setFiatAnchorEl(null)
   }
 
   const classes = useStyles()
@@ -93,40 +121,72 @@ export default function ApplicationBar({
             {dark ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
         </Tooltip>
-        {displayAddress ? (
-          <React.Fragment>
-            <Tooltip title="Copy/Change">
-              <Button
-                variant="contained"
-                color="default"
-                className={classes.toolbarButtons}
-                aria-label="address"
-                onClick={handleClick}
-              >
-                {displayAddress}
-              </Button>
-            </Tooltip>
-            <Menu
-              id="address-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
+        <div
+          style={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end' }}
+        >
+          <Tooltip title="Change currency">
+            <Button
+              variant="contained"
+              color="default"
+              className={classes.currency}
+              aria-label="currency"
+              onClick={handleFiatClick}
             >
-              <MenuItem className={classes.menuItem} onClick={handleCloseCopy}>
-                Copy
-              </MenuItem>
-              <MenuItem
-                className={classes.menuItem}
-                onClick={handleCloseChange}
+              {fiat}
+            </Button>
+          </Tooltip>
+          <Menu
+            id="currency-menu"
+            anchorEl={fiatAnchorEl}
+            keepMounted
+            open={Boolean(fiatAnchorEl)}
+            onClose={handleFiatClose}
+          >
+            <MenuItem className={classes.menuItem} onClick={handleFiatUSD}>
+              USD
+            </MenuItem>
+            <MenuItem className={classes.menuItem} onClick={handleFiatEUR}>
+              EUR
+            </MenuItem>
+          </Menu>
+          {displayAddress ? (
+            <React.Fragment>
+              <Tooltip title="Copy/Change">
+                <Button
+                  variant="contained"
+                  color="default"
+                  className={classes.toolbarButtons}
+                  aria-label="address"
+                  onClick={handleClickAddr}
+                >
+                  {displayAddress}
+                </Button>
+              </Tooltip>
+              <Menu
+                id="address-menu"
+                anchorEl={addrAnchorEl}
+                keepMounted
+                open={Boolean(addrAnchorEl)}
+                onClose={handleCloseAddr}
               >
-                Change
-              </MenuItem>
-            </Menu>
-          </React.Fragment>
-        ) : (
-          <React.Fragment></React.Fragment>
-        )}
+                <MenuItem
+                  className={classes.menuItem}
+                  onClick={handleCloseCopy}
+                >
+                  Copy
+                </MenuItem>
+                <MenuItem
+                  className={classes.menuItem}
+                  onClick={handleCloseChange}
+                >
+                  Change
+                </MenuItem>
+              </Menu>
+            </React.Fragment>
+          ) : (
+            <React.Fragment></React.Fragment>
+          )}
+        </div>
       </Toolbar>
     </AppBar>
   )

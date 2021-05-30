@@ -15,7 +15,8 @@ function App() {
   }
 
   const [address, setAddress] = useState(getStoredAddress())
-  const [priceEUR, setPriceEUR] = useState(0)
+  const [priceFiat, setPriceFiat] = useState(0)
+  const [fiat, setFiat] = useState('USD')
   const [balance, setBalance] = useState(0)
   const [validatorBalances, setValidatorBalances] = useState(
     [] as [number, number, number, number][]
@@ -53,20 +54,24 @@ function App() {
         <ApplicationBar
           address={address}
           setAddress={setAddress}
+          fiat={fiat}
+          setFiat={setFiat}
           dark={dark}
           setDark={setDark}
         />
         <OpenWallet address={address} setAddress={setAddress} />
         <GetAssets
           address={address}
-          setPriceEUR={setPriceEUR}
+          setPriceFiat={setPriceFiat}
+          fiat={fiat}
           setBalance={setBalance}
           setValidatorBalances={setValidatorBalances}
           // reload={reload}
         />
         <DisplayAssets
           address={address}
-          priceEUR={priceEUR}
+          priceFiat={priceFiat}
+          fiat={fiat}
           balance={balance}
           validatorBalances={validatorBalances}
         />

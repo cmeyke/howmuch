@@ -16,14 +16,16 @@ const useStyles = makeStyles({
 
 type DisplayAssetsParameterType = {
   address: string
-  priceEUR: number
+  priceFiat: number
+  fiat: string
   balance: number
   validatorBalances: [number, number, number, number][]
 }
 
 function DisplayAssets({
   address,
-  priceEUR,
+  priceFiat,
+  fiat,
   balance,
   validatorBalances,
 }: DisplayAssetsParameterType) {
@@ -35,9 +37,10 @@ function DisplayAssets({
 
   if (address === 'change') return <div></div>
 
-  const formaterEUR = new Intl.NumberFormat(undefined, {
+  const formaterFiat = new Intl.NumberFormat(undefined, {
     style: 'currency',
-    currency: 'EUR',
+    currency: fiat,
+    currencyDisplay: 'narrowSymbol',
   }).format
 
   const formaterETH = new Intl.NumberFormat(undefined, {
@@ -136,9 +139,9 @@ function DisplayAssets({
     <TableContainer component={Paper}>
       {displayTableMainCategory(
         'Net Worth',
-        formaterEUR(overallBalance * priceEUR)
+        formaterFiat(overallBalance * priceFiat)
       )}
-      {displayTableCategory(`Wallet - ${formaterEUR(balance * priceEUR)}`)}
+      {displayTableCategory(`Wallet - ${formaterFiat(balance * priceFiat)}`)}
       <Table>
         <TableHead>
           {displayTableRow('Asset', 'Balance', 'Price', 'Value', '1')}
@@ -147,14 +150,14 @@ function DisplayAssets({
           {displayTableRow(
             'ETH',
             formaterETH(balance),
-            formaterEUR(priceEUR),
-            formaterEUR(balance * priceEUR),
+            formaterFiat(priceFiat),
+            formaterFiat(balance * priceFiat),
             '1'
           )}
         </TableBody>
       </Table>
       {displayTableCategory(
-        `Staked - ${formaterEUR(validatorBalancesSum * priceEUR)}`
+        `Staked - ${formaterFiat(validatorBalancesSum * priceFiat)}`
       )}
       <Table>
         <TableHead>
@@ -164,13 +167,15 @@ function DisplayAssets({
           {displayTableRow(
             'ETH2 Deposit',
             formaterETH(validatorBalancesSum),
-            formaterEUR(priceEUR),
-            formaterEUR(validatorBalancesSum * priceEUR),
+            formaterFiat(priceFiat),
+            formaterFiat(validatorBalancesSum * priceFiat),
             '1'
           )}
         </TableBody>
       </Table>
-      {displayTableCategory(`Earnings - ${formaterEUR(totalEarnings * priceEUR)}
+      {displayTableCategory(`Earnings - ${formaterFiat(
+        totalEarnings * priceFiat
+      )}
       `)}
       <Table>
         <TableHead>
@@ -180,8 +185,8 @@ function DisplayAssets({
           {displayTableRow(
             'ETH2 Deposit',
             formaterETH(totalEarnings),
-            formaterEUR(priceEUR),
-            formaterEUR(totalEarnings * priceEUR),
+            formaterFiat(priceFiat),
+            formaterFiat(totalEarnings * priceFiat),
             '1'
           )}
         </TableBody>
