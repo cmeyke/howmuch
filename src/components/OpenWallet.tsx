@@ -12,18 +12,6 @@ export const OpenWallet = ({
   address,
   setAddress,
 }: OpenWalletParameterType) => {
-  async function getAddress() {
-    if (givenProvider)
-      try {
-        const [selectedAddress] = await givenProvider.request({
-          method: 'eth_accounts',
-        })
-        checkAndSetAddress(selectedAddress, setAddress)
-      } catch (e) {
-        console.error(e)
-      }
-  }
-
   async function connectWallet() {
     if (givenProvider)
       try {
@@ -36,17 +24,7 @@ export const OpenWallet = ({
       }
   }
 
-  if (address && address !== 'change') return <div></div>
+  if (address) return <React.Fragment />
 
-  if (!address) {
-    getAddress()
-  }
-
-  if (!address || address === 'change') {
-    return (
-      <InputAddress setAddress={setAddress} connectWallet={connectWallet} />
-    )
-  }
-
-  return <React.Fragment />
+  return <InputAddress setAddress={setAddress} connectWallet={connectWallet} />
 }

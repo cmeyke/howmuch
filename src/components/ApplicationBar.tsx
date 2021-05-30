@@ -57,7 +57,8 @@ export default function ApplicationBar({
   }
 
   const handleCloseChange = () => {
-    setAddress('change')
+    setAddress('')
+    localStorage.removeItem('address')
     setAnchorEl(null)
   }
 
