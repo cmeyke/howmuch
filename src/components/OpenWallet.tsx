@@ -1,3 +1,4 @@
+import React from 'react'
 import { InputAddress, checkAndSetAddress } from './InputAddress'
 
 type OpenWalletParameterType = {
@@ -14,7 +15,6 @@ export const OpenWallet = ({
   async function getAddress() {
     if (givenProvider)
       try {
-        // console.log('getAddress')
         const [selectedAddress] = await givenProvider.request({
           method: 'eth_accounts',
         })
@@ -27,7 +27,6 @@ export const OpenWallet = ({
   async function connectWallet() {
     if (givenProvider)
       try {
-        // console.log('connectWallet')
         const [selectedAddress] = await givenProvider.request({
           method: 'eth_requestAccounts',
         })
@@ -38,18 +37,16 @@ export const OpenWallet = ({
   }
 
   if (address && address !== 'change') return <div></div>
-  // console.log('OpenWallet')
 
   if (!address) {
     getAddress()
   }
 
   if (!address || address === 'change') {
-    // window.document.title = "Connect wallet"
     return (
       <InputAddress setAddress={setAddress} connectWallet={connectWallet} />
     )
   }
 
-  return <div></div>
+  return <React.Fragment />
 }

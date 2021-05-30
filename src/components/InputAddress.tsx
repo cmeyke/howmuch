@@ -42,15 +42,12 @@ export const InputAddress = ({
 }: InputAddressParameterType) => {
   const [inputAddress, setInputAddress] = useState('')
 
-  const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    setInputAddress(event.target.value)
-  }
+  const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> =
+    event => {
+      setInputAddress(event.target.value)
+    }
 
-  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
-    event
-  ) => {
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
     if (event.key === 'Enter' && inputAddress)
       checkAndSetAddress(inputAddress, setAddress)
   }
@@ -59,24 +56,24 @@ export const InputAddress = ({
 
   return (
     <div className={classes.root}>
-      <Grid container direction='column' spacing={4}>
+      <Grid container direction="column" spacing={4}>
         <Grid key={1}>
-          <Typography variant='h6' className={classes.margin}>
+          <Typography variant="h6" className={classes.margin}>
             View your ETH1 and ETH2 assets and staking rewards in one simple
             interface.
           </Typography>
         </Grid>
         <Grid key={2} item>
-          <Grid container spacing={2} justify='center' alignItems='center'>
+          <Grid container spacing={2} justify="center" alignItems="center">
             <Grid key={1} item xs={5}>
               <TextField
-                size='small'
+                size="small"
                 autoFocus
                 fullWidth
-                autoComplete='off'
-                id='address'
-                label='ETH1 Address'
-                variant='outlined'
+                autoComplete="off"
+                id="address"
+                label="ETH1 Address"
+                variant="outlined"
                 value={inputAddress}
                 onChange={handleAddressChange}
                 onKeyDown={handleKeyDown}
@@ -85,7 +82,7 @@ export const InputAddress = ({
             <Grid key={2} item className={classes.display}>
               <Button
                 className={classes.borderRadius}
-                variant='contained'
+                variant="contained"
                 onClick={() => {
                   if (inputAddress) checkAndSetAddress(inputAddress, setAddress)
                 }}
@@ -101,7 +98,7 @@ export const InputAddress = ({
                 <Grid key={4} item className={classes.display}>
                   <Button
                     className={classes.borderRadius}
-                    variant='contained'
+                    variant="contained"
                     onClick={connectWallet}
                   >
                     Connect wallet

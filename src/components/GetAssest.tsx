@@ -34,31 +34,21 @@ export const GetAssets = ({
   }
 
   function getNewProvider() {
-    // console.log('getNewProvider')
-    if (!(window as any).ethereum) {
+    if ((window as any).ethereum) {
+      return new ethers.providers.Web3Provider((window as any).ethereum)
+    } else {
       return ethers.getDefaultProvider('homestead', {
         alchemy: process.env.REACT_APP_ALCHEMY_API_KEY,
         etherscan: process.env.REACT_APP_ETHERSCAN_API_KEY,
         infura: process.env.REACT_APP_INFURA_PROJECT_ID,
-        pocket: process.env.REACT_APP_POCKET_APP_KEY,
+        pocket: process.env.REACT_APP_POCKET_GATEWAY_ID,
       })
-      // return new ethers.providers.PocketProvider(
-      //   'homestead',
-      //   process.env.REACT_APP_POCKET_APP_KEY
-      // )
-      // return new ethers.providers.AlchemyProvider(
-      //   'homestead',
-      //   process.env.REACT_APP_ALCHEMY_API_KEY
-      // )
-    } else {
-      return new ethers.providers.Web3Provider((window as any).ethereum)
     }
   }
 
   const provider = getNewProvider()
 
   async function getBalance() {
-    // console.log('getBalance')
     try {
       const balance = await provider.getBalance(address)
       setBalance(Number(ethers.utils.formatEther(balance)))
@@ -114,7 +104,6 @@ export const GetAssets = ({
 
   useEffect(() => {
     if (address) {
-      // console.log('useEffect: get validator balances')
       setValidatorBalances([])
 
       validators.forEach(validator => {
@@ -124,7 +113,5 @@ export const GetAssets = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [validators])
 
-  // console.log('GetAssets')
-
-  return <div></div>
+  return <React.Fragment />
 }

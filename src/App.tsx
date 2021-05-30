@@ -7,7 +7,7 @@ import ApplicationBar from './components/ApplicationBar'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
-function App () {
+function App() {
   const getStoredAddress: () => string = () => {
     const savedAddress = localStorage.getItem('address')
     if (savedAddress) return savedAddress
@@ -24,7 +24,6 @@ function App () {
 
   useEffect(() => {
     if (address && address !== 'change') {
-      // console.log(`store: "${address}"`)
       localStorage.setItem('address', address)
     }
   }, [address])
@@ -35,20 +34,20 @@ function App () {
 
   const darkTheme = createMuiTheme({
     palette: {
-      type: 'dark'
-    }
+      type: 'dark',
+    },
   })
 
   const lightTheme = createMuiTheme({
     palette: {
-      type: 'light'
-    }
+      type: 'light',
+    },
   })
 
   const appliedTheme = createMuiTheme(dark ? darkTheme : lightTheme)
 
   return (
-    <div className='App'>
+    <div className="App">
       <ThemeProvider theme={appliedTheme}>
         <CssBaseline />
         <ApplicationBar

@@ -75,38 +75,38 @@ export default function ApplicationBar({
   }
 
   return (
-    <AppBar position='static'>
+    <AppBar position="static">
       <Toolbar className={classes.toolbar}>
-        <Tooltip title='Home/Reload'>
+        <Tooltip title="Home/Reload">
           <IconButton
-            edge='start'
-            color='inherit'
-            aria-label='home'
+            edge="start"
+            color="inherit"
+            aria-label="home"
             onClick={() => window.location.reload()}
           >
             <Home />
           </IconButton>
         </Tooltip>
-        <Tooltip title='Toggle light/dark theme'>
-          <IconButton color='inherit' onClick={toogleTheme}>
+        <Tooltip title="Toggle light/dark theme">
+          <IconButton color="inherit" onClick={toogleTheme}>
             {dark ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
         </Tooltip>
         {displayAddress ? (
           <React.Fragment>
-            <Tooltip title='Copy/Change'>
+            <Tooltip title="Copy/Change">
               <Button
-                variant='contained'
-                color='default'
+                variant="contained"
+                color="default"
                 className={classes.toolbarButtons}
-                aria-label='address'
+                aria-label="address"
                 onClick={handleClick}
               >
                 {displayAddress}
               </Button>
             </Tooltip>
             <Menu
-              id='address-menu'
+              id="address-menu"
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}

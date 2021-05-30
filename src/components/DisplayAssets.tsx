@@ -57,7 +57,6 @@ function DisplayAssets({
     validatorBalancesSum += validator[1]
   })
   const overallBalance = validatorBalancesSum + balance
-  // window.document.title = overallBalance.toString()
 
   function createDataValidators(
     index: number,
