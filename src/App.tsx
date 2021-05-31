@@ -16,7 +16,10 @@ function App() {
 
   const [address, setAddress] = useState(getStoredAddress())
   const [priceFiat, setPriceFiat] = useState(0)
-  const [fiat, setFiat] = useState('USD')
+
+  const savedFiat = localStorage.getItem('currency')
+  const [fiat, setFiat] = useState(savedFiat ? savedFiat : 'USD')
+
   const [balance, setBalance] = useState(0)
   const [validatorBalances, setValidatorBalances] = useState(
     [] as [number, number, number, number][]
@@ -32,6 +35,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('dark-mode', dark.toString())
   }, [dark])
+
+  useEffect(() => {
+    localStorage.setItem('currency', fiat)
+  }, [fiat])
 
   const darkTheme = createMuiTheme({
     palette: {
