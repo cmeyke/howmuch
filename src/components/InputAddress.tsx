@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import Alert from '@material-ui/lab/Alert'
 import { ethers } from 'ethers'
 
 type InputAddressParameterType = {
@@ -41,6 +42,7 @@ export const InputAddress = ({
   connectWallet,
 }: InputAddressParameterType) => {
   const [inputAddress, setInputAddress] = useState('')
+  const [noProvider, setNoProvider] = useState(false)
 
   const handleAddressChange: React.ChangeEventHandler<HTMLInputElement> =
     event => {
@@ -90,25 +92,35 @@ export const InputAddress = ({
                 Go
               </Button>
             </Grid>
-            {(window as any).ethereum ? (
-              <React.Fragment>
-                <Grid key={3} item>
-                  <Typography>or</Typography>
-                </Grid>
-                <Grid key={4} item className={classes.display}>
-                  <Button
-                    className={classes.borderRadius}
-                    variant="contained"
-                    onClick={connectWallet}
-                  >
-                    Connect wallet
-                  </Button>
-                </Grid>
-              </React.Fragment>
-            ) : (
-              <React.Fragment></React.Fragment>
-            )}
+            <Grid key={3} item>
+              <Typography>or</Typography>
+            </Grid>
+            <Grid key={4} item className={classes.display}>
+              <Button
+                className={classes.borderRadius}
+                variant="contained"
+                onClick={
+                  (window as any).ethereum
+                    ? connectWallet
+                    : () => setNoProvider(true)
+                }
+              >
+                Connect wallet
+              </Button>
+            </Grid>
           </Grid>
+        </Grid>
+        <Grid key={3} container justify="center" item>
+          {noProvider && (
+            <Alert
+              severity="warning"
+              onClose={() => {
+                setNoProvider(false)
+              }}
+            >
+              In order to connect your wallet Metamask needs to be installed.
+            </Alert>
+          )}
         </Grid>
       </Grid>
     </div>
