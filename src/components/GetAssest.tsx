@@ -80,9 +80,9 @@ export const GetAssets = ({
         `https://beaconcha.in/api/v1/validator/eth1/${address}`
       )
       setValidators(
-        res.data.data.map(
-          (item: { validatorindex: number }) => item.validatorindex
-        )
+        res.data.data
+          .sort((a: number, b: number) => a - b)
+          .map((item: { validatorindex: number }) => item.validatorindex)
       )
     } catch (err) {
       console.error(err)

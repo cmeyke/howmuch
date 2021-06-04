@@ -71,7 +71,7 @@ function DisplayAssets({
   }
 
   const validatorRows = validatorBalances
-    .sort((a, b) => a[0] - b[0])
+    // .sort((a, b) => a[0] - b[0])
     .map(validator =>
       createDataValidators(
         validator[0],
