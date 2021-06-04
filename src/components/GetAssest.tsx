@@ -103,34 +103,41 @@ export const GetAssets = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fiat])
 
-  async function getValidatorBalances(validator: number) {
-    try {
-      const validatorData = await axios.get(
-        `https://beaconcha.in/api/v1/validator/${validator}`
-      )
-      const validatorEfficiency = await axios.get(
-        `https://beaconcha.in/api/v1/validator/${validator}/attestationefficiency`
-      )
-      const validatorBalance: [number, number, number, number] = [
-        validator,
-        validatorData.data.data.balance / 1000000000,
-        validatorData.data.data.effectivebalance / 1000000000,
-        1 - (validatorEfficiency.data.data.attestation_efficiency - 1),
-      ]
-      setValidatorBalances(v => v.concat([validatorBalance]))
-    } catch (err) {
-      console.error(err)
+  async function getValidatorsBalances(validators: number[]) {
+    const maxValidators = validators.slice(0, 100)
+    const validatorsString = maxValidators.toString()
+    if (validatorsString !== '') {
+      setValidatorBalances([])
+      try {
+        const validatorsData = await axios.get(
+          `https://beaconcha.in/api/v1/validator/${validatorsString}`
+        )
+        const validatorsEfficiency = await axios.get(
+          `https://beaconcha.in/api/v1/validator/${validatorsString}/attestationefficiency`
+        )
+        if (
+          validatorsData.data.data.length ===
+          validatorsEfficiency.data.data.length
+        ) {
+          for (let i = 0; i < validatorsData.data.data.length; i++) {
+            const validatorBalance: [number, number, number, number] = [
+              validators[i],
+              validatorsData.data.data[i].balance / 1000000000,
+              validatorsData.data.data[i].effectivebalance / 1000000000,
+              1 -
+                (validatorsEfficiency.data.data[i].attestation_efficiency - 1),
+            ]
+            setValidatorBalances(v => v.concat([validatorBalance]))
+          }
+        }
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 
   useEffect(() => {
-    if (address) {
-      setValidatorBalances([])
-
-      validators.forEach(validator => {
-        getValidatorBalances(validator)
-      })
-    }
+    if (address) getValidatorsBalances(validators)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [validators])
 

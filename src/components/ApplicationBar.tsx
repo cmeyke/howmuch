@@ -142,11 +142,11 @@ export default function ApplicationBar({
             open={Boolean(fiatAnchorEl)}
             onClose={handleFiatClose}
           >
-            <MenuItem className={classes.menuItem} onClick={handleFiatUSD}>
-              USD
-            </MenuItem>
             <MenuItem className={classes.menuItem} onClick={handleFiatEUR}>
               EUR
+            </MenuItem>
+            <MenuItem className={classes.menuItem} onClick={handleFiatUSD}>
+              USD
             </MenuItem>
           </Menu>
           {displayAddress ? (
