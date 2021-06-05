@@ -4,4 +4,4 @@ Provide an ETH1 address or connnect your wallet. The app will display the corres
 
 ## Restrictions
 
-Because of beaconcha.in's free api rate limit only a maximum of 100 validators can be analysed.
+Because of beaconcha.in's free api rate limit a maximum of only 100 validators can be analysed.
