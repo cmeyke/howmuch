@@ -52,7 +52,7 @@ function App() {
     },
   })
 
-  const appliedTheme = createMuiTheme(dark ? darkTheme : lightTheme)
+  const appliedTheme = dark ? darkTheme : lightTheme
 
   return (
     <div className="App">
